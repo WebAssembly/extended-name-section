@@ -29,7 +29,7 @@ and provide initialization logic in the form of :ref:`data <syntax-data>` and :r
 Each of the vectors -- and thus the entire module -- may be empty.
 
 
-.. index:: ! index, ! index space, ! type index, ! function index, ! table index, ! memory index, ! global index, ! local index, ! label index, function, global, table, memory, local, parameter, import
+.. index:: ! index, ! index space, ! type index, ! function index, ! table index, ! memory index, ! global index, ! local index, ! label index, function label index, function, global, table, memory, local, parameter, import
    pair: abstract syntax; type index
    pair: abstract syntax; function index
    pair: abstract syntax; table index
@@ -37,6 +37,7 @@ Each of the vectors -- and thus the entire module -- may be empty.
    pair: abstract syntax; global index
    pair: abstract syntax; local index
    pair: abstract syntax; label index
+   pair: abstract syntax; function label index
    pair: type; index
    pair: function; index
    pair: table; index
@@ -51,6 +52,7 @@ Each of the vectors -- and thus the entire module -- may be empty.
 .. _syntax-globalidx:
 .. _syntax-localidx:
 .. _syntax-labelidx:
+.. _syntax-funclabelidx:
 .. _syntax-index:
 
 Indices
@@ -68,6 +70,7 @@ Each class of definition has its own *index space*, as distinguished by the foll
    \production{global index} & \globalidx &::=& \u32 \\
    \production{local index} & \localidx &::=& \u32 \\
    \production{label index} & \labelidx &::=& \u32 \\
+   \production{function label index} & \funclabelidx &::=& \u32 \\
    \end{array}
 
 The index space for :ref:`functions <syntax-func>`, :ref:`tables <syntax-table>`, :ref:`memories <syntax-mem>` and :ref:`globals <syntax-global>` includes respective :ref:`imports <syntax-import>` declared in the same module.
@@ -75,7 +78,9 @@ The indices of these imports precede the indices of other definitions in the sam
 
 The index space for :ref:`locals <syntax-local>` is only accessible inside a :ref:`function <syntax-func>` and includes the parameters of that function, which precede the local variables.
 
-Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence.
+Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence. Each structured control instruction introduces a new label index space that assigns indices to that structured control instruction and the enclosing structured control instructions.
+
+Function label indices also reference :ref:`structured control instructions <syntax-instr-control>`, but with a single index space for each :ref:`function <syntax-func>` that assigns indices to structured control instructions in the order that they occur in the function's body.
 
 
 Conventions

@@ -46,7 +46,12 @@ Each subsection consists of a
      n{:}\Bname & (\iff n = \text{name}) \\ &&&
      \Bmodulenamesubsec^? \\ &&&
      \Bfuncnamesubsec^? \\ &&&
-     \Blocalnamesubsec^? \\
+     \Blocalnamesubsec^? \\ &&&
+     \Blabelnamesubsec^? \\ &&&
+     \Btypenamesubsec^? \\ &&&
+     \Btablenamesubsec^? \\ &&&
+     \Bmemorynamesubsec^? \\ &&&
+     \Bglobalnamesubsec^? \\
    \production{name subsection} & \Bnamesubsection_N(\B{B}) &::=&
      N{:}\Bbyte~~\X{size}{:}\Bu32~~\B{B}
        & (\iff \X{size} = ||\B{B}||) \\
@@ -60,6 +65,11 @@ Id  Subsection
  0  :ref:`module name <binary-modulenamesec>`
  1  :ref:`function names <binary-funcnamesec>`    
  2  :ref:`local names <binary-localnamesec>`
+ 3  :ref:`label names <binary-labelnamesec>`
+ 4  :ref:`type names <binary-typenamesec>`
+ 5  :ref:`table names <binary-tablenamesec>`
+ 6  :ref:`memory names <binary-memorynamesec>`
+ 7  :ref:`global names <binary-globalnamesec>`
 ==  ===========================================
 
 Each subsection may occur at most once, and in order of increasing id.
@@ -142,4 +152,81 @@ It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning lo
    \begin{array}{llclll}
    \production{local name subsection} & \Blocalnamesubsec &::=&
      \Bnamesubsection_2(\Bindirectnamemap) \\
+   \end{array}
+
+
+.. index:: function, label, function index, label index
+.. _binary-labelnamesec:
+
+Label Names
+...........
+
+The *label name subsection* has the id 3.
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning label names to :ref:`function label indices <syntax-funclabelidx>` grouped by :ref:`function indices <syntax-funcidx>`.
+
+.. math::
+  \begin{array}{llclll}
+  \production{label name subsection} & \Blabelnamesubsec &::=&
+    \Bnamesubsection_3(\Bindirectnamemap) \\
+  \end{array}
+
+
+.. index:: type, type index
+.. _binary-typenamesec:
+
+Type Names
+..............
+
+The *type name subsection* has the id 4.
+It consists of a :ref:`name map <binary-namemap>` assigning type names to :ref:`type indices <syntax-typeidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{type name subsection} & \Btypenamesubsec &::=&
+     \Bnamesubsection_4(\Bnamemap) \\
+   \end{array}
+
+.. index:: table, table index
+.. _binary-tablenamesec:
+
+Table Names
+..............
+
+The *table name subsection* has the id 5.
+It consists of a :ref:`name map <binary-namemap>` assigning table names to :ref:`table indices <syntax-tableidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{table name subsection} & \Btablenamesubsec &::=&
+     \Bnamesubsection_5(\Bnamemap) \\
+   \end{array}
+
+.. index:: memory, memory index
+.. _binary-memorynamesec:
+
+Memory Names
+..............
+
+The *memory name subsection* has the id 6.
+It consists of a :ref:`name map <binary-namemap>` assigning memory names to :ref:`memory indices <syntax-memidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{memory name subsection} & \Bmemorynamesubsec &::=&
+     \Bnamesubsection_6(\Bnamemap) \\
+   \end{array}
+
+.. index:: global, global index
+.. _binary-globalnamesec:
+
+Global Names
+..............
+
+The *global name subsection* has the id 7.
+It consists of a :ref:`name map <binary-namemap>` assigning global names to :ref:`global indices <syntax-globalidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{global name subsection} & \Bglobalnamesubsec &::=&
+     \Bnamesubsection_7(\Bnamemap) \\
    \end{array}
