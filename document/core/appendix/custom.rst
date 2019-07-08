@@ -46,7 +46,13 @@ Each subsection consists of a
      \Bmodulenamesubsec^? \\ &&&
      \Bfuncnamesubsec^? \\ &&&
      \Blocalnamesubsec^? \\ &&&
+     \Blabelnamesubsec^? \\ &&&
      \Btypenamesubsec^? \\ &&&
+     \Btablenamesubsec^? \\ &&&
+     \Bmemorynamesubsec^? \\ &&&
+     \Bglobalnamesubsec^? \\ &&&
+     \Belemnamesubsec^? \\ &&&
+     \Bdatanamesubsec^? \\ &&&
      \Bfieldnamesubsec^? \\ &&&
      \Btagnamesubsec^? \\
    \production{name subsection} & \Bnamesubsection_N(\B{B}) &::=&
@@ -60,9 +66,15 @@ The following subsection ids are used:
 Id  Subsection                                 
 ==  ===========================================
  0  :ref:`module name <binary-modulenamesec>`
- 1  :ref:`function names <binary-funcnamesec>`    
+ 1  :ref:`function names <binary-funcnamesec>`
  2  :ref:`local names <binary-localnamesec>`
+ 3  :ref:`label names <binary-labelnamesec>`
  4  :ref:`type names <binary-typenamesec>`
+ 5  :ref:`table names <binary-tablenamesec>`
+ 6  :ref:`memory names <binary-memorynamesec>`
+ 7  :ref:`global names <binary-globalnamesec>`
+ 8  :ref:`element segment names <binary-elemnamesec>`
+ 9  :ref:`data segment names <binary-datanamesec>`
 10  :ref:`field names <binary-fieldnamesec>`
 11  :ref:`tag names <binary-tagnamesec>`
 ==  ===========================================
@@ -150,6 +162,22 @@ It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning lo
    \end{array}
 
 
+.. index:: function, label, function index, label index
+.. _binary-labelnamesec:
+
+Label Names
+...........
+
+The *label name subsection* has the id 3.
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning label names to :ref:`function label indices <syntax-funclabelidx>` grouped by :ref:`function indices <syntax-funcidx>`.
+
+.. math::
+  \begin{array}{llclll}
+  \production{label name subsection} & \Blabelnamesubsec &::=&
+    \Bnamesubsection_3(\Bindirectnamemap) \\
+  \end{array}
+
+
 .. index:: type, type index
 .. _binary-typenamesec:
 
@@ -163,6 +191,86 @@ It consists of a :ref:`name map <binary-namemap>` assigning type names to :ref:`
    \begin{array}{llclll}
    \production{type name subsection} & \Btypenamesubsec &::=&
      \Bnamesubsection_4(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: table, table index
+.. _binary-tablenamesec:
+
+Table Names
+..............
+
+The *table name subsection* has the id 5.
+It consists of a :ref:`name map <binary-namemap>` assigning table names to :ref:`table indices <syntax-tableidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{table name subsection} & \Btablenamesubsec &::=&
+     \Bnamesubsection_5(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: memory, memory index
+.. _binary-memorynamesec:
+
+Memory Names
+..............
+
+The *memory name subsection* has the id 6.
+It consists of a :ref:`name map <binary-namemap>` assigning memory names to :ref:`memory indices <syntax-memidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{memory name subsection} & \Bmemorynamesubsec &::=&
+     \Bnamesubsection_6(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: global, global index
+.. _binary-globalnamesec:
+
+Global Names
+..............
+
+The *global name subsection* has the id 7.
+It consists of a :ref:`name map <binary-namemap>` assigning global names to :ref:`global indices <syntax-globalidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{global name subsection} & \Bglobalnamesubsec &::=&
+     \Bnamesubsection_7(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: element, element index
+.. _binary-elemnamesec:
+
+Element Segment Names
+.....................
+
+The *element name subsection* has the id 8.
+It consists of a :ref:`name map <binary-namemap>` assigning element segment names to :ref:`element indices <syntax-elemidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{element name subsection} & \Belemnamesubsec &::=&
+     \Bnamesubsection_8(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: element, element index
+.. _binary-datanamesec:
+
+Data Segment Names
+..................
+
+The *data name subsection* has the id 9.
+It consists of a :ref:`name map <binary-namemap>` assigning data segment names to :ref:`data indices <syntax-dataidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{data name subsection} & \Bdatanamesubsec &::=&
+     \Bnamesubsection_9(\Bnamemap) \\
    \end{array}
 
 

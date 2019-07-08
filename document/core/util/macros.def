@@ -367,6 +367,7 @@
 .. |localidx| mathdef:: \xref{syntax/modules}{syntax-localidx}{\X{localidx}}
 .. |labelidx| mathdef:: \xref{syntax/modules}{syntax-labelidx}{\X{labelidx}}
 .. |fieldidx| mathdef:: \xref{syntax/modules}{syntax-fieldidx}{\X{fieldidx}}
+.. |funclabelidx| mathdef:: \xref{syntax/modules}{syntax-funclabelidx}{\X{funclabelidx}}
 
 .. |externidx| mathdef:: \xref{syntax/modules}{syntax-externidx}{\X{externidx}}
 
@@ -1808,10 +1809,16 @@
 
 .. |Bmodulenamesubsec| mathdef:: \xref{appendix/custom}{binary-modulenamesec}{\B{modulenamesubsec}}
 .. |Bfuncnamesubsec| mathdef:: \xref{appendix/custom}{binary-funcnamesec}{\B{funcnamesubsec}}
-.. |Btagnamesubsec| mathdef:: \xref{appendix/custom}{binary-tagnamesec}{\B{tagnamesubsec}}
 .. |Blocalnamesubsec| mathdef:: \xref{appendix/custom}{binary-localnamesec}{\B{localnamesubsec}}
+.. |Blabelnamesubsec| mathdef:: \xref{appendix/custom}{binary-labelnamesec}{\B{labelnamesubsec}}
 .. |Btypenamesubsec| mathdef:: \xref{appendix/custom}{binary-typenamesec}{\B{typenamesubsec}}
+.. |Btablenamesubsec| mathdef:: \xref{appendix/custom}{binary-tablenamesec}{\B{tablenamesubsec}}
+.. |Bmemorynamesubsec| mathdef:: \xref{appendix/custom}{binary-memorynamesec}{\B{memorynamesubsec}}
+.. |Bglobalnamesubsec| mathdef:: \xref{appendix/custom}{binary-globalnamesec}{\B{globalnamesubsec}}
+.. |Belemnamesubsec| mathdef:: \xref{appendix/custom}{binary-elemnamesec}{\B{elemnamesubsec}}
+.. |Bdatanamesubsec| mathdef:: \xref{appendix/custom}{binary-datanamesec}{\B{datanamesubsec}}
 .. |Bfieldnamesubsec| mathdef:: \xref{appendix/custom}{binary-fieldnamesec}{\B{fieldnamesubsec}}
+.. |Btagnamesubsec| mathdef:: \xref{appendix/custom}{binary-tagnamesec}{\B{tagnamesubsec}}
 
 
 .. Annotations
