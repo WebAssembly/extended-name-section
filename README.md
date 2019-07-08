@@ -6,7 +6,7 @@ This repository is a clone of [github.com/WebAssembly/spec/](https://github.com/
 It is meant for discussion, prototype specification and implementation of a proposal to extend the
 name section with names for labels, types, tables, memories, and globals.
 
-See the [overview](proposals/bulk-memory-operations/Overview.md) for a summary of the proposal,
+See the [overview](proposals/extended-name-section/Overview.md) for a summary of the proposal,
 and a rendering to HTML of the updated spec [here](https://www.scheidecker.net/2019-07-08-extended-name-section-spec/).
 
 Original README from upstream repository follows...
