@@ -9,6 +9,10 @@ name section with names for labels, types, tables, memories, and globals.
 See the [overview](proposals/extended-name-section/Overview.md) for a summary of the proposal,
 and a rendering to HTML of the updated spec [here](https://www.scheidecker.net/2019-07-08-extended-name-section-spec/).
 
+You can find some past discussion in the design repo:
+* https://github.com/WebAssembly/design/pull/1064
+* https://github.com/WebAssembly/design/issues/750
+
 Original README from upstream repository follows...
 
 # spec
