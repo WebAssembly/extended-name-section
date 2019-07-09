@@ -5,6 +5,20 @@ names to all entities in the text format that can be named. The WebAssembly spec
 this proposal modifies includes only a module name, function names, and local
 names.
 
+#### Data and elem segment names
+
+All of the entities this proposal adds names to the binary format for are
+part of the WebAssembly MVP. However, the MVP text format does not include
+names for `elem` and `data` segments. The
+[bulk memory ops extension](https://github.com/WebAssembly/bulk-memory-operations)
+adds names to the text format for `elem` and `data` segments, and defines index
+spaces for them, but does not define a binary format for those names.
+
+This proposal adds names to the binary format for segments, and so is dependent
+on the bulk-memory-ops extension's definition of an index space for those
+segments. Other than the elem and data segment name subsections, this proposal
+is independent of the bulk-memory-ops extension.
+
 #### Function label indices
 
 This proposal defines a "function label index" space in addition to the scoped
@@ -37,13 +51,15 @@ transform that doesn't change the structured control instructions.
 
 The following new name subsections are defined:
 
-| Name Type                   | Code | Description                          |
-| --------------------------- | ---- | ------------------------------------ |
-| [Labels](#label-names)      | `3`  | Assigns names to labels in functions |
-| [Type](#type-names)         | `4`  | Assigns names to types               |
-| [Table](#table-names)       | `5`  | Assigns names to tables              |
-| [Memory](#memory-names)     | `6`  | Assigns names to memories            |
-| [Global](#global-names)     | `7`  | Assigns names to globals             |
+| Name Type                           | Code | Description                          |
+| ----------------------------------- | ---- | ------------------------------------ |
+| [Labels](#label-names)              | `3`  | Assigns names to labels in functions |
+| [Type](#type-names)                 | `4`  | Assigns names to types               |
+| [Table](#table-names)               | `5`  | Assigns names to tables              |
+| [Memory](#memory-names)             | `6`  | Assigns names to memories            |
+| [Global](#global-names)             | `7`  | Assigns names to globals             |
+| [Elem segment](#elem-segment-names) | `8`  | Assigns names to element segments    |
+| [Data segment](#data-segment-names) | `9`  | Assigns names to data segments       |
 
 #### Label names
 
@@ -86,3 +102,13 @@ of memories in the [linear memory index space](https://github.com/WebAssembly/de
 
 The global names subsection is a `name_map` which assigns names to a subset
 of globals in the [global index space](https://github.com/WebAssembly/design/blob/master/Modules.md#global-index-space).
+
+#### Elem segment names
+
+The element segment names subsection is a `name_map` which assigns names to a
+subset of element segments in the [element index space](https://github.com/WebAssembly/bulk-memory-operations/blob/master/document/core/syntax/modules.rst#indices).
+
+#### Data segment names
+
+The data segment names subsection is a `name_map` which assigns names to a
+subset of data segments in the [data index space](https://github.com/WebAssembly/bulk-memory-operations/blob/master/document/core/syntax/modules.rst#indices).
