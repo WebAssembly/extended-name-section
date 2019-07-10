@@ -167,6 +167,10 @@ let encode m =
       | GlobalGet x -> op 0x23; var x
       | GlobalSet x -> op 0x24; var x
 
+      | TableCopy -> op 0xfc; op 0x0e; u8 0x00; u8 0x00
+      | TableInit x -> op 0xfc; op 0x0c; var x; u8 0x00
+      | ElemDrop x -> op 0xfc; op 0x0d; var x
+
       | Load ({ty = I32Type; sz = None; _} as mo) -> op 0x28; memop mo
       | Load ({ty = I64Type; sz = None; _} as mo) -> op 0x29; memop mo
       | Load ({ty = F32Type; sz = None; _} as mo) -> op 0x2a; memop mo
@@ -210,6 +214,10 @@ let encode m =
 
       | MemorySize -> op 0x3f; u8 0x00
       | MemoryGrow -> op 0x40; u8 0x00
+      | MemoryFill -> op 0xfc; op 0x0b; u8 0x00
+      | MemoryCopy -> op 0xfc; op 0x0a; u8 0x00; u8 0x00
+      | MemoryInit x -> op 0xfc; op 0x08; var x; u8 0x00
+      | DataDrop x -> op 0xfc; op 0x09; var x
 
       | Const {it = I32 c; _} -> op 0x41; vs32 c
       | Const {it = I64 c; _} -> op 0x42; vs64 c
@@ -469,22 +477,46 @@ let encode m =
       section 10 (vec code) fs (fs <> [])
 
     (* Element section *)
-    let segment dat seg =
-      let {index; offset; init} = seg.it in
-      var index; const offset; dat init
+    let segment active passive seg =
+      match seg.it with
+      | Active {index; offset; init} ->
+        if index.it = 0l then
+          u8 0x00
+        else begin
+          u8 0x02; var index
+        end;
+        const offset; active init
+      | Passive {etype; data} ->
+        u8 0x01; passive etype data
+
+    let active_elem el =
+      match el.it with
+      | RefNull -> assert false
+      | RefFunc x -> var x
+
+    let passive_elem el =
+      match el.it with
+      | RefNull -> u8 0xd0; end_ ()
+      | RefFunc x -> u8 0xd2; var x; end_ ()
 
     let table_segment seg =
-      segment (vec var) seg
+      let active init = vec active_elem init in
+      let passive etype data = elem_type etype; vec passive_elem data in
+      segment active passive seg
 
     let elem_section elems =
       section 9 (vec table_segment) elems (elems <> [])
 
     (* Data section *)
     let memory_segment seg =
-      segment string seg
+      segment string (fun _ s -> string s) seg
 
-    let data_section data =
-      section 11 (vec memory_segment) data (data <> [])
+    let data_section datas =
+      section 11 (vec memory_segment) datas (datas <> [])
+
+    (* Data count section *)
+    let data_count_section datas m =
+      section 12 len (List.length datas) Free.((module_ m).datas <> Set.empty)
 
     (* Module *)
 
@@ -500,7 +532,8 @@ let encode m =
       export_section m.it.exports;
       start_section m.it.start;
       elem_section m.it.elems;
+      data_count_section m.it.datas m;
       code_section m.it.funcs;
-      data_section m.it.data
+      data_section m.it.datas
   end
   in E.module_ m; to_string s

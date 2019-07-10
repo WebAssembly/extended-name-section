@@ -87,10 +87,17 @@ and instr' =
   | LocalTee of var                   (* write local variable and keep value *)
   | GlobalGet of var                  (* read global variable *)
   | GlobalSet of var                  (* write global variable *)
+  | TableCopy                         (* copy elements between table regions *)
+  | TableInit of var                  (* initialize table from segment *)
+  | ElemDrop of var                   (* drop passive element segment *)
   | Load of loadop                    (* read memory at address *)
   | Store of storeop                  (* write memory at address *)
   | MemorySize                        (* size of linear memory *)
   | MemoryGrow                        (* grow linear memory *)
+  | MemoryFill                        (* fill memory region with value *)
+  | MemoryCopy                        (* copy memory regions *)
+  | MemoryInit of var                 (* initialize memory from segment *)
+  | DataDrop of var                   (* drop passive data segment *)
   | Const of literal                  (* constant *)
   | Test of testop                    (* numeric test *)
   | Compare of relop                  (* numeric comparison *)
@@ -133,16 +140,18 @@ and memory' =
   mtype : memory_type;
 }
 
-type 'data segment = 'data segment' Source.phrase
-and 'data segment' =
-{
-  index : var;
-  offset : const;
-  init : 'data;
-}
+type ('data, 'ty) segment = ('data, 'ty) segment' Source.phrase
+and ('data, 'ty) segment' =
+  | Active of {index : var; offset : const; init : 'data}
+  | Passive of {etype : 'ty; data : 'data}
 
-type table_segment = var list segment
-type memory_segment = string segment
+type elem = elem' Source.phrase
+and elem' =
+  | RefNull
+  | RefFunc of var
+
+type table_segment = (elem list, elem_type) segment
+type memory_segment = (string, unit) segment
 
 
 (* Modules *)
@@ -187,8 +196,8 @@ and module_' =
   memories : memory list;
   funcs : func list;
   start : var option;
-  elems : var list segment list;
-  data : string segment list;
+  elems : table_segment list;
+  datas : memory_segment list;
   imports : import list;
   exports : export list;
 }
@@ -204,8 +213,8 @@ let empty_module =
   memories = [];
   funcs = [];
   start = None;
-  elems  = [];
-  data = [];
+  elems = [];
+  datas = [];
   imports = [];
   exports = [];
 }

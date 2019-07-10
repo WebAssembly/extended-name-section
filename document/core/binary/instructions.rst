@@ -110,6 +110,27 @@ Variable Instructions
    \end{array}
 
 
+Table Instructions
+~~~~~~~~~~~~~~~~~~
+
+Each variant of :ref:`table instruction <syntax-instr-table>` is encoded with a different byte code.
+
+.. _binary-table.copy:
+.. _binary-table.init:
+.. _binary-elem.drop:
+
+.. math::
+   \begin{array}{llclll}
+   \production{instruction} & \Binstr &::=& \dots \\ &&|&
+     \hex{FC}~\hex{0C}~~\hex{00}~x{:}\Belemidx &\Rightarrow& \TABLEINIT~x \\ &&|&
+     \hex{FC}~\hex{0D}~~x{:}\Belemidx &\Rightarrow& \ELEMDROP~x \\ &&|&
+     \hex{FC}~\hex{0E}~~\hex{00}~~\hex{00} &\Rightarrow& \TABLECOPY \\
+   \end{array}
+
+.. note::
+   In future versions of WebAssembly, the additional zero bytes occurring in the encoding of the |TABLECOPY| instruction may be used to index additional tables.
+
+
 .. index:: memory instruction, memory index
    pair: binary format; instruction
 .. _binary-instr-memory:
@@ -126,6 +147,10 @@ Each variant of :ref:`memory instruction <syntax-instr-memory>` is encoded with 
 .. _binary-storen:
 .. _binary-memory.size:
 .. _binary-memory.grow:
+.. _binary-memory.fill:
+.. _binary-memory.copy:
+.. _binary-memory.init:
+.. _binary-data.drop:
 
 .. math::
    \begin{array}{llclll}
@@ -156,11 +181,15 @@ Each variant of :ref:`memory instruction <syntax-instr-memory>` is encoded with 
      \hex{3D}~~m{:}\Bmemarg &\Rightarrow& \I64.\STORE\K{16}~m \\ &&|&
      \hex{3E}~~m{:}\Bmemarg &\Rightarrow& \I64.\STORE\K{32}~m \\ &&|&
      \hex{3F}~~\hex{00} &\Rightarrow& \MEMORYSIZE \\ &&|&
-     \hex{40}~~\hex{00} &\Rightarrow& \MEMORYGROW \\
+     \hex{40}~~\hex{00} &\Rightarrow& \MEMORYGROW \\ &&|&
+     \hex{FC}~\hex{08}~~\hex{00}~x{:}\Bdataidx &\Rightarrow& \MEMORYINIT~x \\ &&|&
+     \hex{FC}~\hex{09}~~x{:}\Bdataidx &\Rightarrow& \DATADROP~x \\ &&|&
+     \hex{FC}~\hex{0A}~~\hex{00}~~\hex{00} &\Rightarrow& \MEMORYCOPY \\ &&|&
+     \hex{FC}~\hex{0B}~~\hex{00} &\Rightarrow& \MEMORYFILL \\
    \end{array}
 
 .. note::
-   In future versions of WebAssembly, the additional zero bytes occurring in the encoding of the |MEMORYSIZE| and |MEMORYGROW| instructions may be used to index additional memories.
+   In future versions of WebAssembly, the additional zero bytes occurring in the encoding of the |MEMORYSIZE|, |MEMORYGROW|, |MEMORYCOPY|, and |MEMORYFILL| instructions may be used to index additional memories.
 
 
 .. index:: numeric instruction

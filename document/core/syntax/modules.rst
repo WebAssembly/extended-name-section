@@ -9,7 +9,7 @@ WebAssembly programs are organized into *modules*,
 which are the unit of deployment, loading, and compilation.
 A module collects definitions for :ref:`types <syntax-type>`, :ref:`functions <syntax-func>`, :ref:`tables <syntax-table>`, :ref:`memories <syntax-mem>`, and :ref:`globals <syntax-global>`.
 In addition, it can declare :ref:`imports <syntax-import>` and :ref:`exports <syntax-export>`
-and provide initialization logic in the form of :ref:`data <syntax-data>` and :ref:`element <syntax-elem>` segments or a :ref:`start function <syntax-start>`.
+and provide initialization in the form of :ref:`active <syntax-active>` and :ref:`passive <syntax-passive>` :ref:`data <syntax-data>` and :ref:`element <syntax-elem>` segments, or a :ref:`start function <syntax-start>`.
 
 .. math::
    \begin{array}{lllll}
@@ -29,12 +29,14 @@ and provide initialization logic in the form of :ref:`data <syntax-data>` and :r
 Each of the vectors -- and thus the entire module -- may be empty.
 
 
-.. index:: ! index, ! index space, ! type index, ! function index, ! table index, ! memory index, ! global index, ! local index, ! label index, function label index, function, global, table, memory, local, parameter, import
+.. index:: ! index, ! index space, ! type index, ! function index, ! table index, ! memory index, ! global index, ! local index, ! label index, !function label index, ! element index, ! data index, function, global, table, memory, element, data, local, parameter, import
    pair: abstract syntax; type index
    pair: abstract syntax; function index
    pair: abstract syntax; table index
    pair: abstract syntax; memory index
    pair: abstract syntax; global index
+   pair: abstract syntax; element index
+   pair: abstract syntax; data index
    pair: abstract syntax; local index
    pair: abstract syntax; label index
    pair: abstract syntax; function label index
@@ -43,6 +45,8 @@ Each of the vectors -- and thus the entire module -- may be empty.
    pair: table; index
    pair: memory; index
    pair: global; index
+   pair: element; index
+   pair: data; index
    pair: local; index
    pair: label; index
 .. _syntax-typeidx:
@@ -50,6 +54,8 @@ Each of the vectors -- and thus the entire module -- may be empty.
 .. _syntax-tableidx:
 .. _syntax-memidx:
 .. _syntax-globalidx:
+.. _syntax-elemidx:
+.. _syntax-dataidx:
 .. _syntax-localidx:
 .. _syntax-labelidx:
 .. _syntax-funclabelidx:
@@ -68,6 +74,8 @@ Each class of definition has its own *index space*, as distinguished by the foll
    \production{table index} & \tableidx &::=& \u32 \\
    \production{memory index} & \memidx &::=& \u32 \\
    \production{global index} & \globalidx &::=& \u32 \\
+   \production{element index} & \elemidx &::=& \u32 \\
+   \production{data index} & \dataidx &::=& \u32 \\
    \production{local index} & \localidx &::=& \u32 \\
    \production{label index} & \labelidx &::=& \u32 \\
    \production{function label index} & \funclabelidx &::=& \u32 \\
@@ -76,6 +84,8 @@ Each class of definition has its own *index space*, as distinguished by the foll
 The index space for :ref:`functions <syntax-func>`, :ref:`tables <syntax-table>`, :ref:`memories <syntax-mem>` and :ref:`globals <syntax-global>` includes respective :ref:`imports <syntax-import>` declared in the same module.
 The indices of these imports precede the indices of other definitions in the same index space.
 
+Element indices reference :ref:`element segments <syntax-elem>` and data indices reference :ref:`data segments <syntax-data>`.
+
 The index space for :ref:`locals <syntax-local>` is only accessible inside a :ref:`function <syntax-func>` and includes the parameters of that function, which precede the local variables.
 
 Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence. Each structured control instruction introduces a new label index space that assigns indices to that structured control instruction and the enclosing structured control instructions.
@@ -83,12 +93,28 @@ Label indices reference :ref:`structured control instructions <syntax-instr-cont
 Function label indices also reference :ref:`structured control instructions <syntax-instr-control>`, but with a single index space for each :ref:`function <syntax-func>` that assigns indices to structured control instructions in the order that they occur in the function's body.
 
 
+.. _free-typeidx:
+.. _free-funcidx:
+.. _free-tableidx:
+.. _free-memidx:
+.. _free-globalidx:
+.. _free-elemidx:
+.. _free-dataidx:
+.. _free-localidx:
+.. _free-labelidx:
+.. _free-index:
+
 Conventions
 ...........
 
 * The meta variable :math:`l` ranges over label indices.
 
 * The meta variables :math:`x, y` range over indices in any of the other index spaces.
+
+* The notation :math:`\F{idx}(A)` denotes the set of indices from index space :math:`\X{idx}` occurring free in :math:`A`.
+
+.. note::
+   For example, if :math:`\instr^\ast` is :math:`(\DATADROP~x) (\MEMORYINIT~y)`, then :math:`\freedataidx(\instr^\ast) = \{x, y\}`.
 
 
 .. index:: ! type definition, type index, function type
@@ -221,32 +247,42 @@ Globals are referenced through :ref:`global indices <syntax-globalidx>`,
 starting with the smallest index not referencing a global :ref:`import <syntax-import>`.
 
 
-.. index:: ! element, table, table index, expression, constant, function index, vector
+.. index:: ! element, active, passive, element index, table, table index, expression, constant, function index, vector
    pair: abstract syntax; element
    single: table; element
    single: element; segment
 .. _syntax-elem:
+.. _syntax-elemexpr:
 
 Element Segments
 ~~~~~~~~~~~~~~~~
 
-The initial contents of a table is uninitialized.
-The |MELEM| component of a module defines a vector of *element segments* that initialize a subrange of a table, at a given offset, from a static :ref:`vector <syntax-vec>` of elements.
+The initial contents of a table is uninitialized. *Element segments* can be used to initialize a subrange of a table from a static :ref:`vector <syntax-vec>` of elements.
+
+Element segments can be :ref:`active <syntax-active>` or :ref:`passive <syntax-passive>`. An active element segment copies its elements into a table during :ref:`instantiation <exec-instantiation>`. A passive element segment's elements can be copied using the |TABLEINIT| instruction.
+
+The |MELEM| component of a module defines a vector of element segments. Each active element segment defines the |ETABLE| and the starting |EOFFSET| in that table to initialize. Each passive element segment defines its element type and contents.
 
 .. math::
    \begin{array}{llll}
    \production{element segment} & \elem &::=&
-     \{ \ETABLE~\tableidx, \EOFFSET~\expr, \EINIT~\vec(\funcidx) \} \\
+     \{ \ETABLE~\tableidx, \EOFFSET~\expr, \EINIT~\vec(\elemexpr) \} \\&&|&
+     \{ \ETYPE~\elemtype, \EINIT~\vec(\elemexpr) \} \\
+   \production{elemexpr} & \elemexpr &::=&
+     \REFNULL~\END \\&&|&
+     (\REFFUNC~\funcidx)~\END \\
    \end{array}
 
 The |EOFFSET| is given by a :ref:`constant <valid-constant>` :ref:`expression <syntax-expr>`.
+
+Element segments are referenced through :ref:`element indices <syntax-elemidx>`.
 
 .. note::
    In the current version of WebAssembly, at most one table is allowed in a module.
    Consequently, the only valid |tableidx| is :math:`0`.
 
 
-.. index:: ! data, memory, memory index, expression, constant, byte, vector
+.. index:: ! data, active, passive, data index, memory, memory index, expression, constant, byte, vector
    pair: abstract syntax; data
    single: memory; data
    single: data; segment
@@ -255,16 +291,22 @@ The |EOFFSET| is given by a :ref:`constant <valid-constant>` :ref:`expression <s
 Data Segments
 ~~~~~~~~~~~~~
 
-The initial contents of a :ref:`memory <syntax-mem>` are zero-valued bytes.
-The |MDATA| component of a module defines a vector of *data segments* that initialize a range of memory, at a given offset, with a static :ref:`vector <syntax-vec>` of :ref:`bytes <syntax-byte>`.
+The initial contents of a :ref:`memory <syntax-mem>` are zero bytes. *Data segments* can be used to initialize a range of memory from a static :ref:`vector <syntax-vec>` of :ref:`bytes <syntax-byte>`.
+
+Like element segments, data segments can be :ref:`active <syntax-active>` or :ref:`passive <syntax-passive>`. An active data segment copies its contents into a table during :ref:`instantiation <exec-instantiation>`. A passive data segment's contents can be copied using the |MEMORYINIT| instruction.
+
+The |MDATA| component of a module defines a vector of data segments. Each active data segment defines the memory to initialize, and the starting |DOFFSET| in that memory to initialize. Each passive data segment only defines its contents.
 
 .. math::
    \begin{array}{llll}
    \production{data segment} & \data &::=&
-     \{ \DMEM~\memidx, \DOFFSET~\expr, \DINIT~\vec(\byte) \} \\
+     \{ \DMEM~\memidx, \DOFFSET~\expr, \DINIT~\vec(\byte) \} \\&&|&
+     \{ \DINIT~\vec(\byte) \} \\
    \end{array}
 
 The |DOFFSET| is given by a :ref:`constant <valid-constant>` :ref:`expression <syntax-expr>`.
+
+Data segments are referenced through :ref:`data indices <syntax-dataidx>`.
 
 .. note::
    In the current version of WebAssembly, at most one memory is allowed in a module.

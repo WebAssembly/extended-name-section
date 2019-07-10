@@ -145,9 +145,9 @@ Globals :math:`\global` are classified by :ref:`global types <syntax-globaltype>
 Element Segments
 ~~~~~~~~~~~~~~~~
 
-Element segments :math:`\elem` are not classified by a type.
+Element segments :math:`\elem` are classified by :ref:`segment types <syntax-segtype>`.
 
-:math:`\{ \ETABLE~x, \EOFFSET~\expr, \EINIT~y^\ast \}`
+:math:`\{ \ETABLE~x, \EOFFSET~\expr, \EINIT~e^\ast \}`
 ......................................................
 
 * The table :math:`C.\CTABLES[x]` must be defined in the context.
@@ -160,10 +160,11 @@ Element segments :math:`\elem` are not classified by a type.
 
 * The expression :math:`\expr` must be :ref:`constant <valid-constant>`.
 
-* For each :math:`y_i` in :math:`y^\ast`,
-  the function :math:`C.\CFUNCS[y]` must be defined in the context.
+* For each :math:`e_i` in :math:`e^\ast`,
 
-* Then the element segment is valid.
+  * The element expression :math:`e_i` must be :ref:`valid <valid-elemexpr>`.
+
+* Then the element segment is valid with type |SACTIVE|.
 
 
 .. math::
@@ -174,9 +175,51 @@ Element segments :math:`\elem` are not classified by a type.
      \qquad
      C \vdashexprconst \expr \const
      \qquad
-     (C.\CFUNCS[y] = \functype)^\ast
+     (C \vdashelemexpr e \ok)^\ast
    }{
-     C \vdashelem \{ \ETABLE~x, \EOFFSET~\expr, \EINIT~y^\ast \} \ok
+     C \vdashelem \{ \ETABLE~x, \EOFFSET~\expr, \EINIT~e^\ast \} : \SACTIVE
+   }
+
+
+:math:`\{ \ETYPE~et, \EINIT~e^\ast \}`
+......................................
+
+* For each :math:`e_i` in :math:`e^\ast`,
+
+  * The element expression :math:`e_i` must be :ref:`valid <valid-elemexpr>`.
+
+* Then the element segment is valid with type |SPASSIVE|.
+
+
+.. math::
+   \frac{
+     (C \vdashelemexpr e \ok)^\ast
+   }{
+     C \vdashelem \{ \ETYPE~et, \EINIT~e^\ast \} : \SPASSIVE
+   }
+
+
+.. _valid-elemexpr:
+
+:math:`\elemexpr`
+.................
+
+* An element expression must be:
+
+  * either of the form :math:`\REFNULL~\END`,
+
+  * or of the form :math:`(\REFFUNC~x)~\END`, in which case :math:`C.\CFUNCS[x]` must be defined in the context.
+
+.. math::
+   \frac{
+   }{
+     C \vdashelemexpr \REFNULL~\END \ok
+   }
+   \qquad
+   \frac{
+     C.\CFUNCS[x] = \functype
+   }{
+     C \vdashelemexpr (\REFFUNC~x)~\END \ok
    }
 
 
@@ -190,7 +233,7 @@ Element segments :math:`\elem` are not classified by a type.
 Data Segments
 ~~~~~~~~~~~~~
 
-Data segments :math:`\data` are not classified by any type.
+Data segments :math:`\data` are classified by :ref:`segment types <syntax-segtype>`.
 
 :math:`\{ \DMEM~x, \DOFFSET~\expr, \DINIT~b^\ast \}`
 ....................................................
@@ -201,7 +244,7 @@ Data segments :math:`\data` are not classified by any type.
 
 * The expression :math:`\expr` must be :ref:`constant <valid-constant>`.
 
-* Then the data segment is valid.
+* Then the data segment is valid with type |SACTIVE|.
 
 
 .. math::
@@ -212,7 +255,20 @@ Data segments :math:`\data` are not classified by any type.
      \qquad
      C \vdashexprconst \expr \const
    }{
-     C \vdashdata \{ \DMEM~x, \DOFFSET~\expr, \DINIT~b^\ast \} \ok
+     C \vdashdata \{ \DMEM~x, \DOFFSET~\expr, \DINIT~b^\ast \} : \SACTIVE
+   }
+
+
+:math:`\{ \DINIT~b^\ast \}`
+....................................................
+
+* The data segment is valid.
+
+
+.. math::
+   \frac{
+   }{
+     C \vdashdata \{ \DINIT~b^\ast \} : \SPASSIVE
    }
 
 
@@ -453,6 +509,10 @@ Instead, the context :math:`C` for validation of the module's content is constru
   * :math:`C.\CGLOBALS` is :math:`\etglobals(\X{it}^\ast)` concatenated with :math:`\X{gt}^\ast`,
     with the import's :ref:`external types <syntax-externtype>` :math:`\X{it}^\ast` and the internal :ref:`global types <syntax-globaltype>` :math:`\X{gt}^\ast` as determined below,
 
+  * :math:`C.\CELEM` is :math:`\X{est}^\ast`, with :ref:`segment types <syntax-segtype>` :math:`\X{est}^\ast` as determined below,
+
+  * :math:`C.\CDATA` is :math:`\X{dst}^\ast`, with :ref:`segment types <syntax-segtype>` :math:`\X{dst}^\ast` as determined below,
+
   * :math:`C.\CLOCALS` is empty,
 
   * :math:`C.\CLABELS` is empty,
@@ -481,10 +541,10 @@ Instead, the context :math:`C` for validation of the module's content is constru
       the definition :math:`\global_i` must be :ref:`valid <valid-global>` with a :ref:`global type <syntax-globaltype>` :math:`\X{gt}_i`.
 
   * For each :math:`\elem_i` in :math:`\module.\MELEM`,
-    the segment :math:`\elem_i` must be :ref:`valid <valid-elem>`.
+    the segment :math:`\elem_i` must be :ref:`valid <valid-elem>` with a :ref:`segment type <syntax-segtype>` :math:`\X{est}_i`.
 
   * For each :math:`\data_i` in :math:`\module.\MDATA`,
-    the segment :math:`\data_i` must be :ref:`valid <valid-data>`.
+    the segment :math:`\data_i` must be :ref:`valid <valid-data>` with a :ref:`segment type <syntax-segtype>` :math:`\X{dst}_i`.
 
   * If :math:`\module.\MSTART` is non-empty,
     then :math:`\module.\MSTART` must be :ref:`valid <valid-start>`.
@@ -509,6 +569,10 @@ Instead, the context :math:`C` for validation of the module's content is constru
 
 * Let :math:`\X{gt}^\ast` be the concatenation of the internal :ref:`global types <syntax-globaltype>` :math:`\X{gt}_i`, in index order.
 
+* Let :math:`\X{est}^\ast` be the concatenation of the :ref:`segment types <syntax-segtype>` :math:`\X{est}_i`, in index order.
+
+* Let :math:`\X{dst}^\ast` be the concatenation of the :ref:`segment types <syntax-segtype>` :math:`\X{dst}_i`, in index order.
+
 * Let :math:`\X{it}^\ast` be the concatenation of :ref:`external types <syntax-externtype>` :math:`\X{it}_i` of the imports, in index order.
 
 * Let :math:`\X{et}^\ast` be the concatenation of :ref:`external types <syntax-externtype>` :math:`\X{et}_i` of the exports, in index order.
@@ -528,9 +592,9 @@ Instead, the context :math:`C` for validation of the module's content is constru
      \quad
      (C' \vdashglobal \global : \X{gt})^\ast
      \\
-     (C \vdashelem \elem \ok)^\ast
+     (C \vdashelem \elem : \X{est})^\ast
      \quad
-     (C \vdashdata \data \ok)^\ast
+     (C \vdashdata \data : \X{dst})^\ast
      \quad
      (C \vdashstart \start \ok)^?
      \quad
@@ -546,7 +610,7 @@ Instead, the context :math:`C` for validation of the module's content is constru
      \qquad
      \X{igt}^\ast = \etglobals(\X{it}^\ast)
      \\
-     C = \{ \CTYPES~\functype^\ast, \CFUNCS~\X{ift}^\ast~\X{ft}^\ast, \CTABLES~\X{itt}^\ast~\X{tt}^\ast, \CMEMS~\X{imt}^\ast~\X{mt}^\ast, \CGLOBALS~\X{igt}^\ast~\X{gt}^\ast \}
+     C = \{ \CTYPES~\functype^\ast, \CFUNCS~\X{ift}^\ast~\X{ft}^\ast, \CTABLES~\X{itt}^\ast~\X{tt}^\ast, \CMEMS~\X{imt}^\ast~\X{mt}^\ast, \CGLOBALS~\X{igt}^\ast~\X{gt}^\ast, \CELEM~\X{est}^\ast, \CDATA~\X{dst}^\ast \}
      \\
      C' = \{ \CGLOBALS~\X{igt}^\ast \}
      \qquad

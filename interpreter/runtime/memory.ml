@@ -6,6 +6,7 @@ open Values
 type size = int32  (* number of pages *)
 type address = int64
 type offset = int32
+type count = int32
 
 type pack_size = Pack8 | Pack16 | Pack32
 type extension = SX | ZX
@@ -143,3 +144,34 @@ let store_packed sz mem a o v =
     | I64 x -> x
     | _ -> raise Type
   in storen mem a o n x
+
+let init mem bs d s n =
+  let load_str_byte a =
+    try Char.code bs.[Int64.to_int a]
+    with _ -> raise Bounds
+  in let rec loop d s n =
+    if I32.gt_u n 0l then begin
+      store_byte mem d (load_str_byte s);
+      loop (Int64.add d 1L) (Int64.add s 1L) (Int32.sub n 1l)
+    end
+  in loop d s n
+
+let copy mem d s n =
+  let n' = I64_convert.extend_i32_u n in
+  let rec loop d s n dx =
+    if I32.gt_u n 0l then begin
+      store_byte mem d (load_byte mem s);
+      loop (Int64.add d dx) (Int64.add s dx) (Int32.sub n 1l) dx
+    end
+  in (if s < d then
+    loop Int64.(add d (sub n' 1L)) Int64.(add s (sub n' 1L)) n (-1L)
+  else
+    loop d s n 1L)
+
+let fill mem a v n =
+  let rec loop a n =
+    if I32.gt_u n 0l then begin
+      store_byte mem a v;
+      loop (Int64.add a 1L) (Int32.sub n 1l)
+    end
+  in loop a n

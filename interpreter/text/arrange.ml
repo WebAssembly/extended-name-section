@@ -242,10 +242,17 @@ let rec instr e =
     | LocalTee x -> "local.tee " ^ var x, []
     | GlobalGet x -> "global.get " ^ var x, []
     | GlobalSet x -> "global.set " ^ var x, []
+    | TableCopy -> "table.copy", []
+    | TableInit x -> "table.init " ^ var x, []
+    | ElemDrop x -> "elem.drop " ^ var x, []
     | Load op -> loadop op, []
     | Store op -> storeop op, []
     | MemorySize -> "memory.size", []
     | MemoryGrow -> "memory.grow", []
+    | MemoryFill -> "memory.fill", []
+    | MemoryCopy -> "memory.copy", []
+    | MemoryInit x -> "memory.init " ^ var x, []
+    | DataDrop x -> "data.drop " ^ var x, []
     | Const lit -> constop lit ^ " " ^ value lit, []
     | Test op -> testop op, []
     | Compare op -> relop op, []
@@ -289,15 +296,29 @@ let memory off i mem =
   let {mtype = MemoryType lim} = mem.it in
   Node ("memory $" ^ nat (off + i) ^ " " ^ limits nat32 lim, [])
 
-let segment head dat seg =
-  let {index; offset; init} = seg.it in
-  Node (head, atom var index :: Node ("offset", const offset) :: dat init)
+let segment head active passive seg =
+  match seg.it with
+  | Active {index; offset; init} ->
+    Node (head, atom var index :: Node ("offset", const offset) :: active init)
+  | Passive {etype; data} -> Node (head, passive etype data)
+
+let active_elem el =
+  match el.it with
+  | RefNull -> assert false
+  | RefFunc x -> atom var x
+
+let passive_elem el =
+  match el.it with
+  | RefNull -> Node ("ref.null", [])
+  | RefFunc x -> Node ("ref.func", [atom var x])
 
 let elems seg =
-  segment "elem" (list (atom var)) seg
+  let active init = list active_elem init in
+  let passive etype init = atom elem_type etype :: list passive_elem init in
+  segment "elem" active passive seg
 
 let data seg =
-  segment "data" break_bytes seg
+  segment "data" break_bytes (fun _ bs -> break_bytes bs) seg
 
 
 (* Modules *)
@@ -368,7 +389,7 @@ let module_with_var_opt x_opt m =
     list export m.it.exports @
     opt start m.it.start @
     list elems m.it.elems @
-    list data m.it.data
+    list data m.it.datas
   )
 
 let binary_module_with_var_opt x_opt bs =

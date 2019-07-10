@@ -21,6 +21,8 @@ type context =
   tables : table_type list;
   memories : memory_type list;
   globals : global_type list;
+  datas : segment_type list;
+  elems : segment_type list;
   locals : value_type list;
   results : value_type list;
   labels : stack_type list;
@@ -28,7 +30,8 @@ type context =
 
 let empty_context =
   { types = []; funcs = []; tables = []; memories = [];
-    globals = []; locals = []; results = []; labels = [] }
+    globals = []; datas = []; elems = [];
+    locals = []; results = []; labels = [] }
 
 let lookup category list x =
   try Lib.List32.nth list x.it with Failure _ ->
@@ -39,6 +42,8 @@ let func (c : context) x = lookup "function" c.funcs x
 let table (c : context) x = lookup "table" c.tables x
 let memory (c : context) x = lookup "memory" c.memories x
 let global (c : context) x = lookup "global" c.globals x
+let data (c : context) x = lookup "data segment" c.datas x
+let elem (c : context) x = lookup "elem segment" c.elems x
 let local (c : context) x = lookup "local" c.locals x
 let label (c : context) x = lookup "label" c.labels x
 
@@ -228,8 +233,6 @@ let rec check_instr (c : context) (e : instr) (s : infer_stack_type) : op_type =
     let FuncType (ins, out) = type_ c x in
     (ins @ [I32Type]) --> out
 
-
-
   | LocalGet x ->
     [] --> [local c x]
 
@@ -248,6 +251,20 @@ let rec check_instr (c : context) (e : instr) (s : infer_stack_type) : op_type =
     require (mut = Mutable) x.at "global is immutable";
     [t] --> []
 
+  | TableCopy ->
+    ignore (table c (0l @@ e.at));
+    [I32Type; I32Type; I32Type] --> []
+
+  | TableInit x ->
+    ignore (table c (0l @@ e.at));
+    ignore (elem c x);
+    [I32Type; I32Type; I32Type] --> []
+
+  | ElemDrop x ->
+    ignore (table c (0l @@ e.at));
+    ignore (elem c x);
+    [] --> []
+
   | Load memop ->
     check_memop c memop (Lib.Option.map fst) e.at;
     [I32Type] --> [memop.ty]
@@ -263,6 +280,24 @@ let rec check_instr (c : context) (e : instr) (s : infer_stack_type) : op_type =
   | MemoryGrow ->
     ignore (memory c (0l @@ e.at));
     [I32Type] --> [I32Type]
+
+  | MemoryFill ->
+    ignore (memory c (0l @@ e.at));
+    [I32Type; I32Type; I32Type] --> []
+
+  | MemoryCopy ->
+    ignore (memory c (0l @@ e.at));
+    [I32Type; I32Type; I32Type] --> []
+
+  | MemoryInit x ->
+    ignore (memory c (0l @@ e.at));
+    ignore (data c x);
+    [I32Type; I32Type; I32Type] --> []
+
+  | DataDrop x ->
+    ignore (memory c (0l @@ e.at));
+    ignore (data c x);
+    [] --> []
 
   | Const v ->
     let t = type_value v.it in
@@ -387,16 +422,26 @@ let check_memory (c : context) (mem : memory) =
   let {mtype} = mem.it in
   check_memory_type mtype mem.at
 
+let check_elemref (c : context) (el : elem) =
+  match el.it with
+  | RefNull -> ()
+  | RefFunc x -> ignore (func c x)
+
 let check_elem (c : context) (seg : table_segment) =
-  let {index; offset; init} = seg.it in
-  check_const c offset I32Type;
-  ignore (table c index);
-  ignore (List.map (func c) init)
+  match seg.it with
+  | Active {index; offset; init} ->
+    ignore (table c index);
+    check_const c offset I32Type;
+    List.iter (check_elemref c) init
+  | Passive {etype; data} ->
+    List.iter (check_elemref c) data
 
 let check_data (c : context) (seg : memory_segment) =
-  let {index; offset; init} = seg.it in
-  check_const c offset I32Type;
-  ignore (memory c index)
+  match seg.it with
+  | Active {index; offset; init} ->
+    ignore (memory c index);
+    check_const c offset I32Type
+  | Passive init -> ()
 
 let check_global (c : context) (glob : global) =
   let {gtype; value} = glob.it in
@@ -442,7 +487,7 @@ let check_export (c : context) (set : NameSet.t) (ex : export) : NameSet.t =
 
 let check_module (m : module_) =
   let
-    { types; imports; tables; memories; globals; funcs; start; elems; data;
+    { types; imports; tables; memories; globals; funcs; start; elems; datas;
       exports } = m.it
   in
   let c0 =
@@ -454,6 +499,8 @@ let check_module (m : module_) =
       funcs = c0.funcs @ List.map (fun f -> type_ c0 f.it.ftype) funcs;
       tables = c0.tables @ List.map (fun tab -> tab.it.ttype) tables;
       memories = c0.memories @ List.map (fun mem -> mem.it.mtype) memories;
+      elems = List.map (fun elem -> SegmentType) elems;
+      datas = List.map (fun data -> SegmentType) datas;
     }
   in
   let c =
@@ -464,7 +511,7 @@ let check_module (m : module_) =
   List.iter (check_table c1) tables;
   List.iter (check_memory c1) memories;
   List.iter (check_elem c1) elems;
-  List.iter (check_data c1) data;
+  List.iter (check_data c1) datas;
   List.iter (check_func c) funcs;
   check_start c start;
   ignore (List.fold_left (check_export c) NameSet.empty exports);
