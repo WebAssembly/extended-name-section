@@ -51,7 +51,9 @@ Each subsection consists of a
      \Btypenamesubsec^? \\ &&&
      \Btablenamesubsec^? \\ &&&
      \Bmemorynamesubsec^? \\ &&&
-     \Bglobalnamesubsec^? \\
+     \Bglobalnamesubsec^? \\ &&&
+     \Belemnamesubsec^? \\ &&&
+     \Bdatanamesubsec^? \\
    \production{name subsection} & \Bnamesubsection_N(\B{B}) &::=&
      N{:}\Bbyte~~\X{size}{:}\Bu32~~\B{B}
        & (\iff \X{size} = ||\B{B}||) \\
@@ -70,6 +72,8 @@ Id  Subsection
  5  :ref:`table names <binary-tablenamesec>`
  6  :ref:`memory names <binary-memorynamesec>`
  7  :ref:`global names <binary-globalnamesec>`
+ 8  :ref:`element segment names <binary-elemnamesec>`
+ 9  :ref:`data segment names <binary-datanamesec>`
 ==  ===========================================
 
 Each subsection may occur at most once, and in order of increasing id.
@@ -229,4 +233,34 @@ It consists of a :ref:`name map <binary-namemap>` assigning global names to :ref
    \begin{array}{llclll}
    \production{global name subsection} & \Bglobalnamesubsec &::=&
      \Bnamesubsection_7(\Bnamemap) \\
+   \end{array}
+
+.. index:: element, element index
+.. _binary-elemnamesec:
+
+Element Segment Names
+.....................
+
+The *element name subsection* has the id 8.
+It consists of a :ref:`name map <binary-namemap>` assigning element segment names to :ref:`element indices <syntax-elemidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{element name subsection} & \Belemnamesubsec &::=&
+     \Bnamesubsection_8(\Bnamemap) \\
+   \end{array}
+
+.. index:: element, element index
+.. _binary-datanamesec:
+
+Data Segment Names
+..................
+
+The *data name subsection* has the id 9.
+It consists of a :ref:`name map <binary-namemap>` assigning data segment names to :ref:`data indices <syntax-dataidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{data name subsection} & \Bdatanamesubsec &::=&
+     \Bnamesubsection_9(\Bnamemap) \\
    \end{array}

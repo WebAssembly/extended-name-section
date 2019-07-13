@@ -1095,6 +1095,8 @@
 .. |Btablenamesubsec| mathdef:: \xref{appendix/custom}{binary-tablenamesec}{\B{tablenamesubsec}}
 .. |Bmemorynamesubsec| mathdef:: \xref{appendix/custom}{binary-memorynamesec}{\B{memorynamesubsec}}
 .. |Bglobalnamesubsec| mathdef:: \xref{appendix/custom}{binary-globalnamesec}{\B{globalnamesubsec}}
+.. |Belemnamesubsec| mathdef:: \xref{appendix/custom}{binary-elemnamesec}{\B{elemnamesubsec}}
+.. |Bdatanamesubsec| mathdef:: \xref{appendix/custom}{binary-datanamesec}{\B{datanamesubsec}}
 
 
 .. Embedding
