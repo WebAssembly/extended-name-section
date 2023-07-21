@@ -63,10 +63,10 @@ The following new name subsections are defined:
 
 #### Label names
 
-The label names subsection assigns `name_map`s to a subset of functions in the
+The label names subsection assigns `namemap`s to a subset of functions in the
 [function index space](Modules.md#function-index-space). This may include both
 module-defined or imported functions, but is only meaningful for module-defined
-functions. The `name_map` for a function assigns names to label indices, with
+functions. The `namemap` for a function assigns names to label indices, with
 label indices assigned sequentially to the labels in the order they are introduced
 by control structure operators (i.e. `block`, `loop`, or `if`) in the function's
 code.
@@ -81,34 +81,34 @@ where a `label_name` is encoded as:
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | index | `varuint32` | the index of the function whose labels are being named |
-| label_map | `name_map` | assignment of names to labeling operator |
+| label_map | `namemap` | assignment of names to labeling operator |
 
 #### Type names
 
-The type names subsection is a `name_map` which assigns names to a subset
+The type names subsection is a `namemap` which assigns names to a subset
 of types in the module's [type section](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#type-section).
 
 #### Table names
 
-The table names subsection is a `name_map` which assigns names to a subset
+The table names subsection is a `namemap` which assigns names to a subset
 of tables in the [table index space](https://github.com/WebAssembly/design/blob/master/Modules.md#table-index-space).
 
 #### Memory names
 
-The memory names subsection is a `name_map` which assigns names to a subset
+The memory names subsection is a `namemap` which assigns names to a subset
 of memories in the [linear memory index space](https://github.com/WebAssembly/design/blob/master/Modules.md#linear-memory-index-space).
 
 #### Global names
 
-The global names subsection is a `name_map` which assigns names to a subset
+The global names subsection is a `namemap` which assigns names to a subset
 of globals in the [global index space](https://github.com/WebAssembly/design/blob/master/Modules.md#global-index-space).
 
 #### Elem segment names
 
-The element segment names subsection is a `name_map` which assigns names to a
+The element segment names subsection is a `namemap` which assigns names to a
 subset of element segments in the [element index space](https://github.com/WebAssembly/bulk-memory-operations/blob/master/document/core/syntax/modules.rst#indices).
 
 #### Data segment names
 
-The data segment names subsection is a `name_map` which assigns names to a
+The data segment names subsection is a `namemap` which assigns names to a
 subset of data segments in the [data index space](https://github.com/WebAssembly/bulk-memory-operations/blob/master/document/core/syntax/modules.rst#indices).
