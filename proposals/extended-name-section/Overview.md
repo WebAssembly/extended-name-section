@@ -60,7 +60,7 @@ The following new name subsections are defined:
 | [Elem segment](#elem-segment-names) | `8`  | Assigns names to element segments    |
 | [Data segment](#data-segment-names) | `9`  | Assigns names to data segments       |
 
-* Note: Code 4 was intentionally skipped as it represents the Type subsection, which is a part of the [Garbage Collection](https://github.com/WebAssembly/gc) proposal. 
+* Note: Code `4` was intentionally skipped as it represents the Type subsection, which is a part of the [Garbage Collection](https://github.com/WebAssembly/gc) proposal. 
 
 #### Label names
 
