@@ -64,7 +64,7 @@ The following new name subsections are defined:
 
 #### Label names
 
-The label names subsection assigns `namemap`s to a subset of functions in the
+The label names subsection assigns `namemap`(s) to a subset of functions in the
 [function index space](Modules.md#function-index-space). This may include both
 module-defined or imported functions, but is only meaningful for module-defined
 functions. The `namemap` for a function assigns names to label indices, with
