@@ -54,12 +54,13 @@ The following new name subsections are defined:
 | Name Type                           | Code | Description                          |
 | ----------------------------------- | ---- | ------------------------------------ |
 | [Labels](#label-names)              | `3`  | Assigns names to labels in functions |
-| [Type](#type-names)                 | `4`  | Assigns names to types               |
 | [Table](#table-names)               | `5`  | Assigns names to tables              |
 | [Memory](#memory-names)             | `6`  | Assigns names to memories            |
 | [Global](#global-names)             | `7`  | Assigns names to globals             |
 | [Elem segment](#elem-segment-names) | `8`  | Assigns names to element segments    |
 | [Data segment](#data-segment-names) | `9`  | Assigns names to data segments       |
+
+* Note: Code 4 was intentionally skipped as it represents the Type subsection, which is a part of the [Garbage Collection](https://github.com/WebAssembly/gc) proposal. 
 
 #### Label names
 
@@ -82,11 +83,6 @@ where a `label_name` is encoded as:
 | ----- | ---- | ----------- |
 | index | `varuint32` | the index of the function whose labels are being named |
 | label_map | `namemap` | assignment of names to labeling operator |
-
-#### Type names
-
-The type names subsection is a `namemap` which assigns names to a subset
-of types in the module's [type section](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#type-section).
 
 #### Table names
 
