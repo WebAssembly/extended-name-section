@@ -33,6 +33,7 @@ syntax context hint(desc "context") hint(macro "%" "C%") =
     ELEMS elemtype*         hint(desc "element segment"),
     LOCALS localtype*       hint(desc "local"),
     LABELS resulttype*      hint(desc "label"),
+    FUNCLABELS resulttype*  hint(desc "function-wide label"),
     RETURN resulttype?      hint(desc "result"),
     REFS funcidx*
   }

@@ -229,13 +229,13 @@ which collects relevant information about the surrounding :ref:`module <syntax-m
 * *Data Segments*: the list of :ref:`data segments <syntax-data>` declared in the current module, each represented by an ${datatype: OK} entry.
 * *Locals*: the list of :ref:`locals <syntax-local>` declared in the current :ref:`function <syntax-func>` (including parameters), represented by their :ref:`local type <syntax-localtype>`.
 * *Labels*: the stack of :ref:`labels <syntax-label>` accessible from the current position, represented by their :ref:`result type <syntax-resulttype>`.
+* *Function-Wide Labels*: the list of :ref:`labels <syntax-label>` declared in the current :ref:`function <syntax-func>`, represented by their :ref:`result type <syntax-resulttype>`.
 * *Return*: the return type of the current :ref:`function <syntax-func>`, represented as an optional :ref:`result type <syntax-resulttype>` that is absent when no return is allowed, as in free-standing expressions.
 * *References*: the list of :ref:`function indices <syntax-funcidx>` that occur in the module outside functions and can hence be used to form references inside them.
 
-In other words, a context contains a sequence of suitable :ref:`types <syntax-type>` for each :ref:`index space <syntax-index>`,
-describing each defined entry in that space.
-Locals, labels and return type are only used for validating :ref:`instructions <syntax-instr>` in :ref:`function bodies <syntax-func>`, and are left empty elsewhere.
-The label stack is the only part of the context that changes as validation of an instruction sequence proceeds.
+In other words, a context contains a sequence of suitable :ref:`types <syntax-type>` for each :ref:`index space <syntax-index>`, describing each defined entry in that space. Locals, labels and return type are only used for validating :ref:`instructions <syntax-instr>` in :ref:`function bodies <syntax-func>`, and are left empty elsewhere.
+
+The label stack changes as validation of an instruction sequence proceeds; it is the only part of the context to do so. The function-wide list of labels can therefore be used to identify labels regardless of the current validation state.
 
 More concretely, contexts are defined as :ref:`records <notation-record>` ${:C} with abstract syntax:
 

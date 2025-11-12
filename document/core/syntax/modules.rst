@@ -25,7 +25,7 @@ $${syntax: module}
 Each of the lists --- and thus the entire module --- may be empty.
 
 
-.. index:: ! index, ! index space, ! type index, ! tag index, ! global index, ! memory index, ! table index, ! function index, ! data index, ! element index, ! local index, ! label index, ! field index, ! function label index, tag, global, memory, table, function, data, element, local, parameter, import, field
+.. index:: ! index, ! index space, ! type index, ! tag index, ! global index, ! memory index, ! table index, ! function index, ! data index, ! element index, ! local index, ! label index, ! field index, tag, global, memory, table, function, data, element, local, parameter, import, field
    pair: abstract syntax; type index
    pair: abstract syntax; tag index
    pair: abstract syntax; global index
@@ -61,33 +61,29 @@ Each of the lists --- and thus the entire module --- may be empty.
 .. _syntax-localidx:
 .. _syntax-labelidx:
 .. _syntax-fieldidx:
-.. _syntax-funclabelidx:
 .. _syntax-index:
 
 Indices
 ~~~~~~~
 
-Definitions are referenced with zero-based *indices*.
-Each class of definition has its own *index space*, as distinguished by the following classes.
+Definitions are referenced with zero-based *indices*. Each class of definition has one (or more) *index spaces*, as distinguished by the following classes.
 
-$${syntax: {typeidx funcidx globalidx tableidx memidx tagidx elemidx dataidx labelidx localidx fieldidx funclabelidx}}
+$${syntax: {typeidx funcidx globalidx tableidx memidx tagidx elemidx dataidx labelidx localidx fieldidx}}
 
-The index space for
+The index spaces for
 :ref:`tags <syntax-tag>`,
 :ref:`globals <syntax-global>`,
 :ref:`memories <syntax-mem>`,
 :ref:`tables <syntax-table>`, and
 :ref:`functions <syntax-func>`
-includes respective :ref:`imports <syntax-import>` declared in the same module.
+include respective :ref:`imports <syntax-import>` declared in the same module.
 The indices of these imports precede the indices of other definitions in the same index space.
 
 Data indices reference :ref:`data segments <syntax-data>` and element indices reference :ref:`element segments <syntax-elem>`.
 
 The index space for :ref:`locals <syntax-local>` is only accessible inside a :ref:`function <syntax-func>` and includes the parameters of that function, which precede the local variables.
 
-Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence. Each structured control instruction introduces a new label index space that assigns indices to that structured control instruction and the enclosing structured control instructions.
-
-Function label indices also reference :ref:`structured control instructions <syntax-instr-control>`, but with a single index space for each :ref:`function <syntax-func>` that assigns indices to structured control instructions in the order that they occur in the function's body.
+Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence. There are two index spaces for labels: one tracks the stack of active labels during validation, while the other tracks all labels defined in a specific function.
 
 Each :ref:`aggregate type <syntax-aggrtype>` provides an index space for its :ref:`fields <syntax-fieldtype>`.
 

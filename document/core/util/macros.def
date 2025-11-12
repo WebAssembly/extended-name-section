@@ -367,7 +367,6 @@
 .. |localidx| mathdef:: \xref{syntax/modules}{syntax-localidx}{\X{localidx}}
 .. |labelidx| mathdef:: \xref{syntax/modules}{syntax-labelidx}{\X{labelidx}}
 .. |fieldidx| mathdef:: \xref{syntax/modules}{syntax-fieldidx}{\X{fieldidx}}
-.. |funclabelidx| mathdef:: \xref{syntax/modules}{syntax-funclabelidx}{\X{funclabelidx}}
 
 .. |externidx| mathdef:: \xref{syntax/modules}{syntax-externidx}{\X{externidx}}
 
@@ -1158,6 +1157,7 @@
 .. |CDATAS| mathdef:: \xref{valid/conventions}{context}{\K{datas}}
 .. |CLOCALS| mathdef:: \xref{valid/conventions}{context}{\K{locals}}
 .. |CLABELS| mathdef:: \xref{valid/conventions}{context}{\K{labels}}
+.. |CFUNCLABELS| mathdef:: \xref{valid/conventions}{context}{\K{funclabels}}
 .. |CRETURN| mathdef:: \xref{valid/conventions}{context}{\K{return}}
 .. |CREFS| mathdef:: \xref{valid/conventions}{context}{\K{refs}}
 .. |CRECS| mathdef:: \xref{appendix/properties}{context-ext}{\K{recs}}
