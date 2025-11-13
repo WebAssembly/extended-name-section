@@ -84,7 +84,7 @@ The index space for :ref:`locals <syntax-local>` is only accessible inside a :re
 
 Label indices reference :ref:`structured control instructions <syntax-instr-control>` inside an instruction sequence. There are two index spaces for labels: one tracks the stack of active labels during validation, while the other tracks all labels defined in a specific function.
 
-Each :ref:`aggregate type <syntax-aggrtype>` provides an index space for its :ref:`fields <syntax-fieldtype>`.
+Each :ref:`composite type <syntax-comptype>` provides an index space for its :ref:`parameters <syntax-resulttype>` (for :ref:`function type <syntax-functype>`) or :ref:`fields <syntax-fieldtype>` (for :ref:`aggregate types <syntax-aggrtype>`). All such address spaces use :ref:`field indices <syntax-fieldidx>`.
 
 
 Conventions
