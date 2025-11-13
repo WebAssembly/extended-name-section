@@ -281,13 +281,16 @@ Field Names
 ...........
 
 The *field name subsection* has the id 10.
-It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning field names to :ref:`field indices <syntax-fieldidx>` grouped by the :ref:`type indices <syntax-typeidx>` of their respective :ref:`structure types <syntax-structtype>`.
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning parameter and field names to :ref:`field indices <syntax-fieldidx>` grouped by the :ref:`type indices <syntax-typeidx>` of their respective :ref:`composite types <syntax-comptype>`.
 
 .. math::
    \begin{array}{llclll}
    \production{field name subsection} & \Bfieldnamesubsec &::=&
      \Bnamesubsection_{10}(\Bindirectnamemap) \\
    \end{array}
+
+.. note::
+   All :ref:`composite types <syntax-comptype>` can be described by the field name subsection, not just :ref:`aggregate types <syntax-aggrtype>`.
 
 
 .. index:: tag, tag index
