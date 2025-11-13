@@ -169,7 +169,7 @@ Label Names
 ...........
 
 The *label name subsection* has the id 3.
-It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning label names to :ref:`label indices <syntax-labelidx>` grouped by :ref:`function indices <syntax-funcidx>`, corresponding to ${resulttype*: C.FUNCLABELS}. 
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning label names to :ref:`label indices <syntax-labelidx>` grouped by :ref:`function indices <syntax-funcidx>`, corresponding to ${resulttype*: C.FUNCLABELS}.
 
 .. math::
   \begin{array}{llclll}
