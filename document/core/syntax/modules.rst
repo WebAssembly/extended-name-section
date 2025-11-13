@@ -37,7 +37,6 @@ Each of the lists --- and thus the entire module --- may be empty.
    pair: abstract syntax; local index
    pair: abstract syntax; label index
    pair: abstract syntax; field index
-   pair: abstract syntax; function label index
    pair: type; index
    pair: tag; index
    pair: global; index
