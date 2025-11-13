@@ -4516,6 +4516,7 @@ $$
 \mathsf{elems}~{{\mathit{elemtype}}^\ast} \\
 \mathsf{locals}~{{\mathit{localtype}}^\ast} \\
 \mathsf{labels}~{{\mathit{resulttype}}^\ast} \\
+\mathsf{funclabels}~{{\mathit{resulttype}}^\ast} \\
 \mathsf{return}~{{\mathit{resulttype}}^?} \\
 \mathsf{refs}~{{\mathit{funcidx}}^\ast} \} \\
 \end{array} \\
