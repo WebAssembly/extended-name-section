@@ -1,25 +1,29 @@
 # Overview
 
-The WebAssembly spec has a custom name section, with subsections for naming the module, functions, locals, types, fields, and tags. This proposal extends the binary format's custom name section, adding subsections for all entities that can be named in the text format. These entities include labels, tables, memories, globals, element segments, and data segments.
+The WebAssembly binary format has a well-known custom name section, with subsections for naming the module, functions, locals, types, struct fields, and tags. These names are frequently used for debugging and tooling.
 
-## New Subsections
+However, there are now several places where identifiers are supported in the text format but no corresponding name subsection exists. This proposal extends the binary format's custom name section to close these gaps.
+
+In addition, the text format defines custom `@name` annotations as a textual analogue to the binary format's custom name section. However, these annotations are currently out of sync with the binary format, and should also be extended to cover the newly-introduced binary subsections.
+
+## New Name Subsections
 
 The following new subsections are defined for the custom name section:
 
-| Subsection                    | Id   |
-| ----------------------------- | ---- |
-| [label names](#label-names)   | `3`  |
-| [table names](#table-names)   | `5`  |
-| [memory names](#memory-names) | `6`  |
-| [global names](#global-names) | `7`  |
-| [elem names](#elem-names)     | `8`  |
-| [data names](#data-names)     | `9`  |
+| Subsection                                      | Id   |
+| ----------------------------------------------- | ---- |
+| [label names](#label-names)                     | `3`  |
+| [table names](#table-names)                     | `5`  |
+| [memory names](#memory-names)                   | `6`  |
+| [global names](#global-names)                   | `7`  |
+| [element segment names](#element-segment-names) | `8`  |
+| [data segment names](#data-segment-names)       | `9`  |
 
 ### Label Names
 
 The *label name subsection* has the id 3. It consists of an [indirect name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-indirectnamemap) assigning label names to label indices grouped by [function indices](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-funcidx).
 
-The label indices referred to above are not to be confused with the [scoped label index space](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-labelidx) already defined in the spec. This proposal introduces a new *function-wide label index space* that assigns indices to the labels in a function in the order their corresponding structured control instruction occurs in the function body.
+Labels are indexed in the order they appear in the function body. This is different from how labels are normally indexed (i.e. the indices used by branch instructions, which use the [scoped label index space](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-labelidx)). Therefore, this proposal introduces a new *function-wide label index space* that assigns indices to labels in source code order.
 
 ### Table Names
 
@@ -33,10 +37,10 @@ The *memory name subsection* has the id 6. It consists of a [name map](https://w
 
 The *global name subsection* has the id 7. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning global names to [global indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-globalidx).
 
-### Elem Names
+### Element Segment names
 
-The *elem name subsection* has the id 8. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning element segment names to [elem indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-elemidx).
+The *element segment name subsection* has the id 8. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning element segment names to [element segment indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-elemidx).
 
-### Data Names
+### Data Segment Names
 
-The *data names subsection* has the id 9. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning data segment names to [data indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-dataidx).
+The *data segment name subsection* has the id 9. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning data segment names to [data segment indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-dataidx).
