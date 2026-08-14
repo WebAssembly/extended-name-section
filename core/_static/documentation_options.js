@@ -1,5 +1,5 @@
 const DOCUMENTATION_OPTIONS = {
-    VERSION: '3.0 + extended-name-section (2025-11-13)',
+    VERSION: '3.0 + extended-name-section (2026-08-14)',
     LANGUAGE: 'en',
     COLLAPSE_INDEX: false,
     BUILDER: 'html',
