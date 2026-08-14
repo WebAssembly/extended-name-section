@@ -10,10 +10,10 @@
 
 This repository is a clone of [github.com/WebAssembly/spec/](https://github.com/WebAssembly/spec/).
 It is meant for discussion, prototype specification and implementation of a proposal to extend the
-name section with names for labels, types, tables, memories, and globals.
+name section to support all productions that support identifiers in the text format.
 
 See the [overview](proposals/extended-name-section/Overview.md) for a summary of the proposal,
-and a rendering to HTML of the updated spec [here](https://www.scheidecker.net/2019-07-08-extended-name-section-spec/).
+and the [modified spec](https://webassembly.github.io/extended-name-section/core/) for details.
 
 You can find some past discussion in the design repo:
 * https://github.com/WebAssembly/design/pull/1064
