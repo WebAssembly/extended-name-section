@@ -1825,6 +1825,7 @@
 .. |Bfieldnamesubsec| mathdef:: \xref{appendix/custom}{binary-fieldnamesec}{\B{fieldnamesubsec}}
 .. |Btagnamesubsec| mathdef:: \xref{appendix/custom}{binary-tagnamesec}{\B{tagnamesubsec}}
 .. |Bparamnamesubsec| mathdef:: \xref{appendix/custom}{binary-paramnamesec}{\B{paramnamesubsec}}
+.. |Btagparamnamesubsec| mathdef:: \xref{appendix/custom}{binary-tagparamnamesec}{\B{tagparamnamesubsec}}
 
 
 .. Annotations
