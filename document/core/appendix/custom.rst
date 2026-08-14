@@ -315,7 +315,7 @@ Name Annotations
 *Name annotations* are the textual analogue to the :ref:`name section <binary-namesec>` and provide a textual representation for it.
 Consequently, their id is :math:`\T{@name}`.
 
-Name annotations can be placed wherever the text format allows binding occurrences of :ref:`identifiers <text-id>`.
+Name annotations can be placed wherever the text format allows binding occurrences of :ref:`identifiers <text-id>`, plus select non-binding occurrences of identifiers defined below.
 If both an identifier and a name annotation are given, the annotation is expected *after* the identifier.
 In that case, the annotation takes precedence over the identifier as a textual representation of the binding's name.
 At most one name annotation may be given per binding.
@@ -374,7 +374,7 @@ Parameter Names
 
 A *parameter name annotation* must be placed on a :ref:`parameter declaration <text-param>`,
 directly after the :math:`\text{param}` keyword, or if present, after the following parameter :ref:`identifier <text-id>`.
-It may only be placed on a declaration that declares exactly one parameter, and only in places where identifiers are also allowed (that is, excluding :ref:`block types <text-blocktype>` and |CALLINDIRECT|).
+It may only be placed on a declaration that declares exactly one parameter, and only in places where identifiers are allowed (that is, excluding :ref:`block types <text-blocktype>` and |CALLINDIRECT|).
 
 .. math::
    \begin{array}{llclll}
