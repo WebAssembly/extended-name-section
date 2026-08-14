@@ -44,3 +44,17 @@ The *element segment name subsection* has the id 8. It consists of a [name map](
 ### Data Segment Names
 
 The *data segment name subsection* has the id 9. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning data segment names to [data segment indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-dataidx).
+
+
+## New Name Annotations
+
+Name annotations are now allowed on all of the following text productions:
+
+- Labels
+- Tables (incl. imported)
+- Memories (incl. imported)
+- Globals (incl. imported)
+- Element segments
+- Data segments
+
+This ensures that name annotations can be used wherever the text format allows binding identifiers.

@@ -345,7 +345,7 @@ $${grammar: Tstart_}
 Imports
 ~~~~~~~
 
-The :ref:`external type <syntax-externtype>` in imports can bind a symbolic tag, global, memory, or function :ref:`identifier <text-id>`.
+The :ref:`external type <syntax-externtype>` in imports can bind a symbolic tag, global, memory, table, or function :ref:`identifier <text-id>`.
 
 $${grammar: Timport_/plain}
 
