@@ -374,7 +374,7 @@ Parameter Names
 
 A *parameter name annotation* must be placed on a :ref:`parameter declaration <text-param>`,
 directly after the :math:`\text{param}` keyword, or if present, after the following parameter :ref:`identifier <text-id>`.
-It may only be placed on a declaration that declares exactly one parameter.
+It may only be placed on a declaration that declares exactly one parameter, and only in places where identifiers are also allowed (that is, excluding :ref:`block types <text-blocktype>` and |CALLINDIRECT|).
 
 .. math::
    \begin{array}{llclll}
