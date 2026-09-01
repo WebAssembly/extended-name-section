@@ -112,7 +112,7 @@ Hence, these syntactic classes can also be interpreted as types.</p>
 <p>Interface operation that are predicates return Boolean values:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llll}
-\def\mathdef139#1{{}}\mathdef139{Boolean} &amp; \href{../appendix/embedding.html#embed-bool}{\mathit{bool}} &amp;::=&amp; \href{../appendix/embedding.html#embed-bool}{\mathit{false}} ~|~ \href{../appendix/embedding.html#embed-bool}{\mathit{true}} \\
+\def\mathdef144#1{{}}\mathdef144{Boolean} &amp; \href{../appendix/embedding.html#embed-bool}{\mathit{bool}} &amp;::=&amp; \href{../appendix/embedding.html#embed-bool}{\mathit{false}} ~|~ \href{../appendix/embedding.html#embed-bool}{\mathit{true}} \\
 \end{array}\end{split}\]</div>
 </section>
 <section id="exceptions-and-errors">
@@ -120,13 +120,13 @@ Hence, these syntactic classes can also be interpreted as types.</p>
 <p>Invoking an exported function may throw or propagate exceptions, expressed by an auxiliary syntactic class:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llll}
-\def\mathdef139#1{{}}\mathdef139{exception} &amp; \href{../appendix/embedding.html#embed-error}{\mathit{exception}} &amp;::=&amp; \href{../appendix/embedding.html#embed-error}{\mathsf{exception}}~\href{../exec/runtime.html#syntax-exnaddr}{\mathit{exnaddr}} \\
+\def\mathdef144#1{{}}\mathdef144{exception} &amp; \href{../appendix/embedding.html#embed-error}{\mathit{exception}} &amp;::=&amp; \href{../appendix/embedding.html#embed-error}{\mathsf{exception}}~\href{../exec/runtime.html#syntax-exnaddr}{\mathit{exnaddr}} \\
 \end{array}\end{split}\]</div>
 <p>The exception address <span class="math notranslate nohighlight">\(exnaddr\)</span> identifies the exception thrown.</p>
 <p>Failure of an interface operation is also indicated by an auxiliary syntactic class:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llll}
-\def\mathdef139#1{{}}\mathdef139{error} &amp; \href{../appendix/embedding.html#embed-error}{\mathit{error}} &amp;::=&amp; \href{../appendix/embedding.html#embed-error}{\mathsf{error}} \\
+\def\mathdef144#1{{}}\mathdef144{error} &amp; \href{../appendix/embedding.html#embed-error}{\mathit{error}} &amp;::=&amp; \href{../appendix/embedding.html#embed-error}{\mathsf{error}} \\
 \end{array}\end{split}\]</div>
 <p>In addition to the error conditions specified explicitly in this section, such as invalid arguments or <a class="reference internal" href="../syntax/instructions.html#exception"><span class="std std-ref">exceptions</span></a> and <a class="reference internal" href="../intro/overview.html#trap"><span class="std std-ref">traps</span></a> resulting from <a class="reference internal" href="../exec/index.html#exec"><span class="std std-ref">execution</span></a>, implementations may also return errors when specific <a class="reference internal" href="implementation.html#impl"><span class="std std-ref">implementation limitations</span></a> are reached.</p>
 <div class="admonition note">

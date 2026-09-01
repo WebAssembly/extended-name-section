@@ -367,8 +367,7 @@ It consists of an <a class="reference internal" href="#binary-indirectnamemap"><
 <span id="text-nameannot"></span><span id="index-17"></span><h2>Name Annotations<a class="headerlink" href="#name-annotations" title="Link to this heading">¶</a></h2>
 <p><em>Name annotations</em> are the textual analogue to the <a class="reference internal" href="#binary-namesec"><span class="std std-ref">name section</span></a> and provide a textual representation for it.
 Consequently, their id is <span class="math notranslate nohighlight">\(\mathtt{&#64;name}\)</span>.</p>
-<p>Analogous to the name section, name annotations are allowed on <a class="reference internal" href="../text/modules.html#text-module"><span class="std std-ref">modules</span></a>, <a class="reference internal" href="../text/modules.html#text-func"><span class="std std-ref">functions</span></a>, and <a class="reference internal" href="../text/modules.html#text-local"><span class="std std-ref">locals</span></a> (including  <a class="reference internal" href="../text/types.html#text-param"><span class="std std-ref">parameters</span></a>).
-They can be placed where the text format allows binding occurrences of respective <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifiers</span></a>.
+<p>Name annotations can be placed wherever the text format allows binding occurrences of <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifiers</span></a>, plus select non-binding occurrences of identifiers defined below.
 If both an identifier and a name annotation are given, the annotation is expected <em>after</em> the identifier.
 In that case, the annotation takes precedence over the identifier as a textual representation of the binding’s name.
 At most one name annotation may be given per binding.</p>
@@ -385,7 +384,7 @@ Names need not be unique.</p>
 </div>
 <section id="text-modulenameannot">
 <span id="index-18"></span><span id="id1"></span><h3>Module Names<a class="headerlink" href="#text-modulenameannot" title="Link to this heading">¶</a></h3>
-<p>A <em>module name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-module"><span class="std std-ref">module</span></a> definition,
+<p>A <em>module name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-module"><span class="std std-ref">module definition</span></a>,
 directly after the <span class="math notranslate nohighlight">\(\def\mathdef103#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef103{module}\)</span> keyword, or if present, after the following module <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
@@ -395,8 +394,8 @@ directly after the <span class="math notranslate nohighlight">\(\def\mathdef103#
 </section>
 <section id="text-funcnameannot">
 <span id="index-19"></span><span id="id2"></span><h3>Function Names<a class="headerlink" href="#text-funcnameannot" title="Link to this heading">¶</a></h3>
-<p>A <em>function name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-func"><span class="std std-ref">function</span></a> definition or function <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
-directly after the <span class="math notranslate nohighlight">\(\def\mathdef104#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef104{func}\)</span> keyword, or if present, after the following function <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a> or.</p>
+<p>A <em>function name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-func"><span class="std std-ref">function definition</span></a> or function <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef104#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef104{func}\)</span> keyword, or if present, after the following function <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
 \def\mathdef68#1{{}}\mathdef68{function name annotation} &amp; \href{../appendix/custom.html#text-funcnameannot}{\mathtt{funcnameannot}} &amp;::=&amp;
@@ -405,9 +404,9 @@ directly after the <span class="math notranslate nohighlight">\(\def\mathdef104#
 </section>
 <section id="text-paramnameannot">
 <span id="index-20"></span><span id="id3"></span><h3>Parameter Names<a class="headerlink" href="#text-paramnameannot" title="Link to this heading">¶</a></h3>
-<p>A <em>parameter name annotation</em> must be placed on a <a class="reference internal" href="../text/types.html#text-param"><span class="std std-ref">parameter</span></a> declaration,
+<p>A <em>parameter name annotation</em> must be placed on a <a class="reference internal" href="../text/types.html#text-param"><span class="std std-ref">parameter declaration</span></a>,
 directly after the <span class="math notranslate nohighlight">\(\def\mathdef105#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef105{param}\)</span> keyword, or if present, after the following parameter <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
-It may only be placed on a declaration that declares exactly one parameter.</p>
+It may only be placed on a declaration that declares exactly one parameter, and only in places where identifiers are allowed (that is, excluding <a class="reference internal" href="../text/instructions.html#text-blocktype"><span class="std std-ref">block types</span></a> and <span class="math notranslate nohighlight">\(\href{../syntax/instructions.html#syntax-instr-control}{\mathsf{call\_indirect}}\)</span>).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
 \def\mathdef68#1{{}}\mathdef68{parameter name annotation} &amp; \href{../appendix/custom.html#text-paramnameannot}{\mathtt{paramnameannot}} &amp;::=&amp;
@@ -416,7 +415,7 @@ It may only be placed on a declaration that declares exactly one parameter.</p>
 </section>
 <section id="text-localnameannot">
 <span id="index-21"></span><span id="id4"></span><h3>Local Names<a class="headerlink" href="#text-localnameannot" title="Link to this heading">¶</a></h3>
-<p>A <em>local name annotation</em> must be placed on a <a class="reference internal" href="../text/types.html#text-param"><span class="std std-ref">local</span></a> declaration,
+<p>A <em>local name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-local"><span class="std std-ref">local declaration</span></a>,
 directly after the <span class="math notranslate nohighlight">\(\def\mathdef106#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef106{local}\)</span> keyword, or if present, after the following local <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
 It may only be placed on a declaration that declares exactly one local.</p>
 <div class="math notranslate nohighlight">
@@ -425,9 +424,18 @@ It may only be placed on a declaration that declares exactly one local.</p>
   \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
 \end{array}\end{split}\]</div>
 </section>
+<section id="text-labelnameannot">
+<span id="index-22"></span><span id="id5"></span><h3>Label Names<a class="headerlink" href="#text-labelnameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>label name annotation</em> must be placed on a <a class="reference internal" href="../text/instructions.html#text-label"><span class="std std-ref">label</span></a>, directly after the <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>, if present.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{label name annotation} &amp; \href{../appendix/custom.html#text-labelnameannot}{\mathtt{labelnameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
 <section id="text-typenameannot">
-<span id="index-22"></span><span id="id5"></span><h3>Type Names<a class="headerlink" href="#text-typenameannot" title="Link to this heading">¶</a></h3>
-<p>A <em>type name annotation</em> must be placed on a <a class="reference internal" href="../text/types.html#text-type"><span class="std std-ref">type</span></a> declaration,
+<span id="index-23"></span><span id="id6"></span><h3>Type Names<a class="headerlink" href="#text-typenameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>type name annotation</em> must be placed on a <a class="reference internal" href="../text/types.html#text-typedef"><span class="std std-ref">type definition</span></a>,
 directly after the <span class="math notranslate nohighlight">\(\def\mathdef107#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef107{type}\)</span> keyword, or if present, after the following type <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
@@ -435,10 +443,60 @@ directly after the <span class="math notranslate nohighlight">\(\def\mathdef107#
   \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
 \end{array}\end{split}\]</div>
 </section>
+<section id="text-tablenameannot">
+<span id="index-24"></span><span id="id7"></span><h3>Table Names<a class="headerlink" href="#text-tablenameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>table name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-table"><span class="std std-ref">table definition</span></a> or table <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef108#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef108{table}\)</span> keyword, or if present, after the following table <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{table name annotation} &amp; \href{../appendix/custom.html#text-tablenameannot}{\mathtt{tablenameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="text-memorynameannot">
+<span id="index-25"></span><span id="id8"></span><h3>Memory Names<a class="headerlink" href="#text-memorynameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>memory name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-mem"><span class="std std-ref">memory definition</span></a> or memory <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef109#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef109{memory}\)</span> keyword, or if present, after the following memory <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{memory name annotation} &amp; \href{../appendix/custom.html#text-memorynameannot}{\mathtt{memorynameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="text-globalnameannot">
+<span id="index-26"></span><span id="id9"></span><h3>Global Names<a class="headerlink" href="#text-globalnameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>global name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-global"><span class="std std-ref">global definition</span></a> or global <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef110#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef110{global}\)</span> keyword, or if present, after the following global <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{global name annotation} &amp; \href{../appendix/custom.html#text-globalnameannot}{\mathtt{globalnameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="text-elemnameannot">
+<span id="index-27"></span><span id="id10"></span><h3>Element Segment Names<a class="headerlink" href="#text-elemnameannot" title="Link to this heading">¶</a></h3>
+<p>An <em>element segment name annotation</em> must be placed on an <a class="reference internal" href="../text/modules.html#text-elem"><span class="std std-ref">element segment definition</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef111#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef111{elem}\)</span> keyword, or if present, after the following element segment <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{element segment name annotation} &amp; \href{../appendix/custom.html#text-elemnameannot}{\mathtt{elemnameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="text-datanameannot">
+<span id="index-28"></span><span id="id11"></span><h3>Data Segment Names<a class="headerlink" href="#text-datanameannot" title="Link to this heading">¶</a></h3>
+<p>A <em>data segment name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-data"><span class="std std-ref">data segment definition</span></a>,
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef112#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef112{data}\)</span> keyword, or if present, after the following data segment <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{llclll}
+\def\mathdef68#1{{}}\mathdef68{data segment name annotation} &amp; \href{../appendix/custom.html#text-datanameannot}{\mathtt{datanameannot}} &amp;::=&amp;
+  \href{../appendix/custom.html#text-nameannot}{\mathtt{nameannot}} \\
+\end{array}\end{split}\]</div>
+</section>
 <section id="text-fieldnameannot">
-<span id="index-23"></span><span id="id6"></span><h3>Field Names<a class="headerlink" href="#text-fieldnameannot" title="Link to this heading">¶</a></h3>
+<span id="index-29"></span><span id="id12"></span><h3>Field Names<a class="headerlink" href="#text-fieldnameannot" title="Link to this heading">¶</a></h3>
 <p>A <em>field name annotation</em> must be placed on the field of a <a class="reference internal" href="../text/types.html#text-structtype"><span class="std std-ref">structure type</span></a>,
-directly after the <span class="math notranslate nohighlight">\(\def\mathdef108#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef108{field}\)</span> keyword, or if present, after the following field <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef113#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef113{field}\)</span> keyword, or if present, after the following field <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
 It may only be placed on a declaration that declares exactly one field.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
@@ -447,9 +505,9 @@ It may only be placed on a declaration that declares exactly one field.</p>
 \end{array}\end{split}\]</div>
 </section>
 <section id="text-tagnameannot">
-<span id="index-24"></span><span id="id7"></span><h3>Tag Names<a class="headerlink" href="#text-tagnameannot" title="Link to this heading">¶</a></h3>
+<span id="index-30"></span><span id="id13"></span><h3>Tag Names<a class="headerlink" href="#text-tagnameannot" title="Link to this heading">¶</a></h3>
 <p>A <em>tag name annotation</em> must be placed on a <a class="reference internal" href="../text/modules.html#text-tag"><span class="std std-ref">tag declaration</span></a> or tag <a class="reference internal" href="../text/modules.html#text-import"><span class="std std-ref">import</span></a>,
-directly after the <span class="math notranslate nohighlight">\(\def\mathdef109#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef109{tag}\)</span> keyword, or if present, after the following tag <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
+directly after the <span class="math notranslate nohighlight">\(\def\mathdef114#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef114{tag}\)</span> keyword, or if present, after the following tag <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
 \def\mathdef68#1{{}}\mathdef68{tag name annotation} &amp; \href{../appendix/custom.html#text-tagnameannot}{\mathtt{tagnameannot}} &amp;::=&amp;
@@ -458,35 +516,35 @@ directly after the <span class="math notranslate nohighlight">\(\def\mathdef109#
 </section>
 </section>
 <section id="custom-annotations">
-<span id="text-customannot"></span><span id="index-25"></span><h2>Custom Annotations<a class="headerlink" href="#custom-annotations" title="Link to this heading">¶</a></h2>
+<span id="text-customannot"></span><span id="index-31"></span><h2>Custom Annotations<a class="headerlink" href="#custom-annotations" title="Link to this heading">¶</a></h2>
 <p><em>Custom annotations</em> are a generic textual representation for any <a class="reference internal" href="../binary/modules.html#binary-customsec"><span class="std std-ref">custom section</span></a>.
 Their id is <span class="math notranslate nohighlight">\(\mathtt{&#64;custom}\)</span>.
 By generating custom annotations, tools converting between <a class="reference internal" href="../binary/index.html#binary"><span class="std std-ref">binary format</span></a> and <a class="reference internal" href="../text/index.html#text"><span class="std std-ref">text format</span></a> can maintain and round-trip the content of custom sections even when they do not recognize them.</p>
 <p>Custom annotations must be placed inside a <a class="reference internal" href="../text/modules.html#text-module"><span class="std std-ref">module</span></a> definition.
-They must occur anywhere after the <span class="math notranslate nohighlight">\(\def\mathdef110#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef110{module}\)</span> keyword, or if present, after the following module <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
+They must occur anywhere after the <span class="math notranslate nohighlight">\(\def\mathdef115#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef115{module}\)</span> keyword, or if present, after the following module <a class="reference internal" href="../text/values.html#text-id"><span class="std std-ref">identifier</span></a>.
 They must not be nested into other constructs.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{llclll}
 \def\mathdef68#1{{}}\mathdef68{custom annotation} &amp; \href{../appendix/custom.html#text-customannot}{\mathtt{customannot}} &amp;::=&amp;
-  \def\mathdef111#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef111{(&#64;custom}~~\href{../text/values.html#text-string}{\mathtt{string}}~~\href{../appendix/custom.html#text-customannot}{\mathtt{customplace}}^?~~\href{../text/modules.html#text-datastring}{\mathtt{datastring}}~~\def\mathdef112#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef112{)} \\
+  \def\mathdef116#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef116{(&#64;custom}~~\href{../text/values.html#text-string}{\mathtt{string}}~~\href{../appendix/custom.html#text-customannot}{\mathtt{customplace}}^?~~\href{../text/modules.html#text-datastring}{\mathtt{datastring}}~~\def\mathdef117#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef117{)} \\
 \def\mathdef68#1{{}}\mathdef68{custom placement} &amp; \href{../appendix/custom.html#text-customannot}{\mathtt{customplace}} &amp;::=&amp;
-  \def\mathdef113#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef113{(}~\def\mathdef114#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef114{before}~~\def\mathdef115#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef115{first}~\def\mathdef116#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef116{)} \\ &amp;&amp;|&amp;
-  \def\mathdef117#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef117{(}~\def\mathdef118#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef118{before}~~\href{../appendix/custom.html#text-customannot}{\mathtt{sec}}~\def\mathdef119#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef119{)} \\ &amp;&amp;|&amp;
-  \def\mathdef120#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef120{(}~\def\mathdef121#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef121{after}~~\href{../appendix/custom.html#text-customannot}{\mathtt{sec}}~\def\mathdef122#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef122{)} \\ &amp;&amp;|&amp;
-  \def\mathdef123#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef123{(}~\def\mathdef124#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef124{after}~~\def\mathdef125#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef125{last}~\def\mathdef126#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef126{)} \\
+  \def\mathdef118#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef118{(}~\def\mathdef119#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef119{before}~~\def\mathdef120#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef120{first}~\def\mathdef121#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef121{)} \\ &amp;&amp;|&amp;
+  \def\mathdef122#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef122{(}~\def\mathdef123#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef123{before}~~\href{../appendix/custom.html#text-customannot}{\mathtt{sec}}~\def\mathdef124#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef124{)} \\ &amp;&amp;|&amp;
+  \def\mathdef125#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef125{(}~\def\mathdef126#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef126{after}~~\href{../appendix/custom.html#text-customannot}{\mathtt{sec}}~\def\mathdef127#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef127{)} \\ &amp;&amp;|&amp;
+  \def\mathdef128#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef128{(}~\def\mathdef129#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef129{after}~~\def\mathdef130#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef130{last}~\def\mathdef131#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef131{)} \\
 \def\mathdef68#1{{}}\mathdef68{section} &amp; \href{../appendix/custom.html#text-customannot}{\mathtt{sec}} &amp;::=&amp;
-  \def\mathdef127#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef127{type} \\ &amp;&amp;|&amp;
-  \def\mathdef128#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef128{import} \\ &amp;&amp;|&amp;
-  \def\mathdef129#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef129{func} \\ &amp;&amp;|&amp;
-  \def\mathdef130#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef130{table} \\ &amp;&amp;|&amp;
-  \def\mathdef131#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef131{memory} \\ &amp;&amp;|&amp;
-  \def\mathdef132#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef132{global} \\ &amp;&amp;|&amp;
-  \def\mathdef133#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef133{export} \\ &amp;&amp;|&amp;
-  \def\mathdef134#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef134{start} \\ &amp;&amp;|&amp;
-  \def\mathdef135#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef135{elem} \\ &amp;&amp;|&amp;
-  \def\mathdef136#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef136{code} \\ &amp;&amp;|&amp;
-  \def\mathdef137#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef137{data} \\ &amp;&amp;|&amp;
-  \def\mathdef138#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef138{datacount} \\
+  \def\mathdef132#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef132{type} \\ &amp;&amp;|&amp;
+  \def\mathdef133#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef133{import} \\ &amp;&amp;|&amp;
+  \def\mathdef134#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef134{func} \\ &amp;&amp;|&amp;
+  \def\mathdef135#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef135{table} \\ &amp;&amp;|&amp;
+  \def\mathdef136#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef136{memory} \\ &amp;&amp;|&amp;
+  \def\mathdef137#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef137{global} \\ &amp;&amp;|&amp;
+  \def\mathdef138#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef138{export} \\ &amp;&amp;|&amp;
+  \def\mathdef139#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef139{start} \\ &amp;&amp;|&amp;
+  \def\mathdef140#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef140{elem} \\ &amp;&amp;|&amp;
+  \def\mathdef141#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef141{code} \\ &amp;&amp;|&amp;
+  \def\mathdef142#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef142{data} \\ &amp;&amp;|&amp;
+  \def\mathdef143#1{\mbox{‘}\mathtt{#1}\mbox{’}}\mathdef143{datacount} \\
 \end{array}\end{split}\]</div>
 <p>The first <a class="reference internal" href="../text/values.html#text-string"><span class="std std-ref">string</span></a> in a custom annotation denotes the name of the custom section it represents.
 The remaining strings collectively represent the section’s payload data, written as a <a class="reference internal" href="../text/modules.html#text-datastring"><span class="std std-ref">data string</span></a>, which can be split up into a possibly empty sequence of individual string literals (similar to <a class="reference internal" href="../text/modules.html#text-data"><span class="std std-ref">data segments</span></a>).</p>
