@@ -5,7 +5,7 @@ Custom Sections and Annotations
 
 This appendix defines dedicated :ref:`custom sections <binary-customsec>` for WebAssembly's :ref:`binary format <binary>` and :ref:`annotations <text-annot>` for the text format.
 Such sections or annotations do not contribute to, or otherwise affect, the WebAssembly semantics, and may be ignored by an implementation.
-However, they provide useful meta data that implementations can make use of to improve user experience or take compilation hints.
+However, they provide useful metadata that implementations can make use of to improve user experience or take compilation hints.
 
 
 
@@ -31,7 +31,7 @@ Subsections
 ...........
 
 The :ref:`data <binary-customsec>` of a name section consists of a sequence of *subsections*.
-Each subsection consists of a
+Each subsection consists of:
 
 * a one-byte subsection *id*,
 * the |U32| *size* of the contents, in bytes,
@@ -54,7 +54,9 @@ Each subsection consists of a
      \Belemnamesubsec^? \\ &&&
      \Bdatanamesubsec^? \\ &&&
      \Bfieldnamesubsec^? \\ &&&
-     \Btagnamesubsec^? \\
+     \Btagnamesubsec^? \\ &&&
+     \Bparamnamesubsec^? \\ &&&
+     \Btagparamnamesubsec^? \\
    \production{name subsection} & \Bnamesubsection_N(\B{B}) &::=&
      N{:}\Bbyte~~\X{size}{:}\Bu32~~\B{B}
        & (\iff \X{size} = ||\B{B}||) \\
@@ -77,6 +79,8 @@ Id  Subsection
  9  :ref:`data segment names <binary-datanamesec>`
 10  :ref:`field names <binary-fieldnamesec>`
 11  :ref:`tag names <binary-tagnamesec>`
+12  :ref:`parameter names <binary-paramnamesec>`
+13  :ref:`tag parameter names <binary-tagparamnamesec>`
 ==  ===========================================
 
 Each subsection may occur at most once, and in order of increasing id.
@@ -154,6 +158,9 @@ Local Names
 
 The *local name subsection* has the id 2.
 It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning local names to :ref:`local indices <syntax-localidx>` grouped by :ref:`function indices <syntax-funcidx>`.
+
+.. note::
+    This includes the function's parameters, and can therefore be used for both defined and imported functions.
 
 .. math::
    \begin{array}{llclll}
@@ -303,6 +310,41 @@ It consists of a :ref:`name map <binary-namemap>` assigning tag names to :ref:`t
    \begin{array}{llclll}
    \production{tag name subsection} & \Btagnamesubsec &::=&
      \Bnamesubsection_{11}(\Bnamemap) \\
+   \end{array}
+
+
+.. index:: parameter, parameter index
+.. _binary-paramnamesec:
+
+Parameter Names
+...............
+
+The *parameter name subsection* has the id 12.
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning parameter names to parameter :ref:`indices <syntax-idx>` grouped by the :ref:`type indices <syntax-typeidx>` of their respective :ref:`function types <syntax-functype>`.
+
+.. note::
+    This section only applies to :ref:`function types <syntax-functype>`, not :ref:`type uses <syntax-typeuse>`. Per-function parameter names are assigned in the :ref:`local name subsection <binary-localnamesec>`, and per-tag parameter names are assigned in the :ref:`tag parameter name subsection <binary-tagparamnamesec>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{parameter name subsection} & \Bparamnamesubsec &::=&
+     \Bnamesubsection_{12}(\Bindirectnamemap) \\
+   \end{array}
+
+
+.. index:: tag, tag parameter, tag parameter index
+.. _binary-tagparamnamesec:
+
+Tag Parameter Names
+...................
+
+The *tag parameter name subsection* has the id 13.
+It consists of an :ref:`indirect name map <binary-indirectnamemap>` assigning parameter names to tag parameter :ref:`indices <syntax-idx>` grouped by their respective :ref:`tag indices <syntax-tagidx>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{tag parameter name subsection} & \Btagparamnamesubsec &::=&
+     \Bnamesubsection_{13}(\Bindirectnamemap) \\
    \end{array}
 
 
