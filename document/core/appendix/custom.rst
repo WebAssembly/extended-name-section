@@ -357,8 +357,7 @@ Name Annotations
 *Name annotations* are the textual analogue to the :ref:`name section <binary-namesec>` and provide a textual representation for it.
 Consequently, their id is :math:`\T{@name}`.
 
-Analogous to the name section, name annotations are allowed on :ref:`modules <text-module>`, :ref:`functions <text-func>`, and :ref:`locals <text-local>` (including  :ref:`parameters <text-param>`).
-They can be placed where the text format allows binding occurrences of respective :ref:`identifiers <text-id>`.
+Name annotations can be placed wherever the text format allows binding occurrences of :ref:`identifiers <text-id>`, plus select non-binding occurrences of identifiers defined below.
 If both an identifier and a name annotation are given, the annotation is expected *after* the identifier.
 In that case, the annotation takes precedence over the identifier as a textual representation of the binding's name.
 At most one name annotation may be given per binding.
@@ -383,7 +382,7 @@ All name annotations have the following format:
 Module Names
 ............
 
-A *module name annotation* must be placed on a :ref:`module <text-module>` definition,
+A *module name annotation* must be placed on a :ref:`module definition <text-module>`,
 directly after the :math:`\text{module}` keyword, or if present, after the following module :ref:`identifier <text-id>`.
 
 .. math::
@@ -399,8 +398,8 @@ directly after the :math:`\text{module}` keyword, or if present, after the follo
 Function Names
 ..............
 
-A *function name annotation* must be placed on a :ref:`function <text-func>` definition or function :ref:`import <text-import>`,
-directly after the :math:`\text{func}` keyword, or if present, after the following function :ref:`identifier <text-id>` or.
+A *function name annotation* must be placed on a :ref:`function definition <text-func>` or function :ref:`import <text-import>`,
+directly after the :math:`\text{func}` keyword, or if present, after the following function :ref:`identifier <text-id>`.
 
 .. math::
    \begin{array}{llclll}
@@ -415,9 +414,9 @@ directly after the :math:`\text{func}` keyword, or if present, after the followi
 Parameter Names
 ...............
 
-A *parameter name annotation* must be placed on a :ref:`parameter <text-param>` declaration,
+A *parameter name annotation* must be placed on a :ref:`parameter declaration <text-param>`,
 directly after the :math:`\text{param}` keyword, or if present, after the following parameter :ref:`identifier <text-id>`.
-It may only be placed on a declaration that declares exactly one parameter.
+It may only be placed on a declaration that declares exactly one parameter, and only in places where identifiers are allowed (that is, excluding :ref:`block types <text-blocktype>` and |CALLINDIRECT|).
 
 .. math::
    \begin{array}{llclll}
@@ -432,7 +431,7 @@ It may only be placed on a declaration that declares exactly one parameter.
 Local Names
 ...........
 
-A *local name annotation* must be placed on a :ref:`local <text-param>` declaration,
+A *local name annotation* must be placed on a :ref:`local declaration <text-local>`,
 directly after the :math:`\text{local}` keyword, or if present, after the following local :ref:`identifier <text-id>`.
 It may only be placed on a declaration that declares exactly one local.
 
@@ -443,18 +442,113 @@ It may only be placed on a declaration that declares exactly one local.
    \end{array}
 
 
+.. index:: function, label
+.. _text-labelnameannot:
+
+Label Names
+...........
+
+A *label name annotation* must be placed on a :ref:`label <text-label>`, directly after the :ref:`identifier <text-id>`, if present.
+
+.. math::
+   \begin{array}{llclll}
+   \production{label name annotation} & \Tlabelnameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
 .. index:: type
 .. _text-typenameannot:
 
 Type Names
 ..........
 
-A *type name annotation* must be placed on a :ref:`type <text-type>` declaration,
+A *type name annotation* must be placed on a :ref:`type definition <text-typedef>`,
 directly after the :math:`\text{type}` keyword, or if present, after the following type :ref:`identifier <text-id>`.
 
 .. math::
    \begin{array}{llclll}
    \production{type name annotation} & \Ttypenameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
+.. index:: table
+.. _text-tablenameannot:
+
+Table Names
+...........
+
+A *table name annotation* must be placed on a :ref:`table definition <text-table>` or table :ref:`import <text-import>`,
+directly after the :math:`\text{table}` keyword, or if present, after the following table :ref:`identifier <text-id>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{table name annotation} & \Ttablenameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
+.. index:: memory
+.. _text-memorynameannot:
+
+Memory Names
+............
+
+A *memory name annotation* must be placed on a :ref:`memory definition <text-mem>` or memory :ref:`import <text-import>`,
+directly after the :math:`\text{memory}` keyword, or if present, after the following memory :ref:`identifier <text-id>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{memory name annotation} & \Tmemorynameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
+.. index:: global
+.. _text-globalnameannot:
+
+Global Names
+............
+
+A *global name annotation* must be placed on a :ref:`global definition <text-global>` or global :ref:`import <text-import>`,
+directly after the :math:`\text{global}` keyword, or if present, after the following global :ref:`identifier <text-id>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{global name annotation} & \Tglobalnameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
+.. index:: element
+.. _text-elemnameannot:
+
+Element Segment Names
+.....................
+
+An *element segment name annotation* must be placed on an :ref:`element segment definition <text-elem>`,
+directly after the :math:`\text{elem}` keyword, or if present, after the following element segment :ref:`identifier <text-id>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{element segment name annotation} & \Telemnameannot &::=&
+     \Tnameannot \\
+   \end{array}
+
+
+.. index:: data
+.. _text-datanameannot:
+
+Data Segment Names
+..................
+
+A *data segment name annotation* must be placed on a :ref:`data segment definition <text-data>`,
+directly after the :math:`\text{data}` keyword, or if present, after the following data segment :ref:`identifier <text-id>`.
+
+.. math::
+   \begin{array}{llclll}
+   \production{data segment name annotation} & \Tdatanameannot &::=&
      \Tnameannot \\
    \end{array}
 

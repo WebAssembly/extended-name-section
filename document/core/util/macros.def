@@ -1845,7 +1845,13 @@
 .. |Tfuncnameannot| mathdef:: \xref{appendix/custom}{text-funcnameannot}{\T{funcnameannot}}
 .. |Tparamnameannot| mathdef:: \xref{appendix/custom}{text-paramnameannot}{\T{paramnameannot}}
 .. |Tlocalnameannot| mathdef:: \xref{appendix/custom}{text-localnameannot}{\T{localnameannot}}
+.. |Tlabelnameannot| mathdef:: \xref{appendix/custom}{text-labelnameannot}{\T{labelnameannot}}
 .. |Ttypenameannot| mathdef:: \xref{appendix/custom}{text-typenameannot}{\T{typenameannot}}
+.. |Ttablenameannot| mathdef:: \xref{appendix/custom}{text-tablenameannot}{\T{tablenameannot}}
+.. |Tmemorynameannot| mathdef:: \xref{appendix/custom}{text-memorynameannot}{\T{memorynameannot}}
+.. |Tglobalnameannot| mathdef:: \xref{appendix/custom}{text-globalnameannot}{\T{globalnameannot}}
+.. |Telemnameannot| mathdef:: \xref{appendix/custom}{text-elemnameannot}{\T{elemnameannot}}
+.. |Tdatanameannot| mathdef:: \xref{appendix/custom}{text-datanameannot}{\T{datanameannot}}
 .. |Tfieldnameannot| mathdef:: \xref{appendix/custom}{text-fieldnameannot}{\T{fieldnameannot}}
 .. |Ttagnameannot| mathdef:: \xref{appendix/custom}{text-tagnameannot}{\T{tagnameannot}}
 

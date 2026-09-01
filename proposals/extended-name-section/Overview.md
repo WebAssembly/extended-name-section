@@ -58,3 +58,17 @@ Note that this section assigns names to parameters in *function types*, not type
 The *tag parameter name subsection* has the id 13. It consists of an [indirect name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-indirectnamemap) assigning parameter names to parameter indices grouped by [tag indices](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-tagidx).
 
 This subsection exists because the names assigned to tag parameters belong to a type use, not a type definition, but because the type use is not associated with a function, the local name subsection cannot be used.
+
+
+## New Name Annotations
+
+Name annotations are now allowed on all of the following text productions:
+
+- Labels
+- Tables (incl. imported)
+- Memories (incl. imported)
+- Globals (incl. imported)
+- Element segments
+- Data segments
+
+This ensures that name annotations can be used wherever the text format allows binding identifiers.
