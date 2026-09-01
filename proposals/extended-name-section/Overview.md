@@ -18,6 +18,8 @@ The following new subsections are defined for the custom name section:
 | [global names](#global-names)                   | `7`  |
 | [element segment names](#element-segment-names) | `8`  |
 | [data segment names](#data-segment-names)       | `9`  |
+| [parameter names](#parameter-names)             | `12` |
+| [tag parameter names](#tag-parameter-names)     | `13` |
 
 ### Label Names
 
@@ -44,6 +46,18 @@ The *element segment name subsection* has the id 8. It consists of a [name map](
 ### Data Segment Names
 
 The *data segment name subsection* has the id 9. It consists of a [name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-namemap) assigning data segment names to [data segment indices](https://webassembly.github.io/spec/core/binary/modules.html#binary-dataidx).
+
+### Parameter Names
+
+The *parameter name subsection* has the id 12. It consists of an [indirect name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-indirectnamemap) assigning parameter names to parameter indices grouped by [type indices](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-typeidx) for function types.
+
+Note that this section assigns names to parameters in *function types*, not type uses (i.e. parameters written inline in function definitions or imports). Such parameters are already covered by the local name subsection.
+
+### Tag Parameter Names
+
+The *tag parameter name subsection* has the id 13. It consists of an [indirect name map](https://webassembly.github.io/spec/core/appendix/custom.html#binary-indirectnamemap) assigning parameter names to parameter indices grouped by [tag indices](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-tagidx).
+
+This subsection exists because the names assigned to tag parameters belong to a type use, not a type definition, but because the type use is not associated with a function, the local name subsection cannot be used.
 
 
 ## New Name Annotations
