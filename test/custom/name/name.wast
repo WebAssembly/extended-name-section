@@ -299,31 +299,31 @@
 
 ;; Index spaces include imports
 
-(module
+(module definition
   (import "m" "f" (func))
   (func)
   (@custom "name" (after data) "\01\04\01\01\01f")   ;; function 1 = "f"
 )
 
-(module
+(module definition
   (import "m" "t" (table 1 funcref))
   (table 1 funcref)
   (@custom "name" (after data) "\05\04\01\01\01t")   ;; table 1 = "t"
 )
 
-(module
+(module definition
   (import "m" "m" (memory 1))
   (memory 1)
   (@custom "name" (after data) "\06\04\01\01\01m")   ;; memory 1 = "m"
 )
 
-(module
+(module definition
   (import "m" "g" (global i32))
   (global i32 (i32.const 0))
   (@custom "name" (after data) "\07\04\01\01\01g")   ;; global 1 = "g"
 )
 
-(module
+(module definition
   (type $t (func))
   (import "m" "e" (tag (type $t)))
   (tag (type $t))
@@ -341,7 +341,7 @@
 )
 
 ;; The local name subsection covers imported functions too.
-(module
+(module definition
   (type $t (func (param i32)))
   (import "m" "f" (func (type $t)))
   (func (type $t))

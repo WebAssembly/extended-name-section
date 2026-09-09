@@ -22,7 +22,7 @@
 
 ;; Function names (subsection 1)
 
-(module
+(module definition
   (type $t (func))
   (import "m" "f" (func (@name "f") (type $t)))
   (import "m" "g" (func $g (@name "g") (type $t)))
@@ -30,7 +30,7 @@
   (func $lambda (@name "λ") (type $t))
 )
 
-(module
+(module definition
   (type $t (func))
   (func (@name "f") (import "m" "f") (type $t))
   (func $g (@name "g") (import "m" "g") (type $t))
@@ -58,7 +58,7 @@
   )
 )
 
-(module
+(module definition
   (import "m" "f" (func (param (@name "p") i32)))
 )
 
@@ -91,6 +91,27 @@
     block $f (@name "f")
       try_table (@name "g") (catch_all $f) end
     end
+  )
+)
+
+;; These two modules should have the same label names.
+(module
+  (func (result i32)
+    block (@name "a") (result i32) i32.const 1 end
+    if (@name "b") (result i32)
+      i32.const 2
+    else
+      i32.const 3
+    end
+  )
+)
+(module
+  (func (result i32)
+    (if (@name "b") (result i32)
+      (block (@name "a") (result i32) (i32.const 1))
+      (then (i32.const 2))
+      (else (i32.const 3))
+    )
   )
 )
 
@@ -149,7 +170,7 @@
 
 ;; Table, memory, and global names (subsections 5, 6, and 7)
 
-(module
+(module definition
   (import "m" "t" (table (@name "t0") 1 funcref))
   (import "m" "m" (memory (@name "m0") 1))
   (import "m" "g" (global (@name "g0") i32))
@@ -216,7 +237,7 @@
 
 ;; Tag and tag parameter names (subsections 11 and 13)
 
-(module
+(module definition
   (type $t (func (param i32)))
   (import "m" "e" (tag (@name "e") (type $t)))
   (tag (@name "θ") (type $t))
