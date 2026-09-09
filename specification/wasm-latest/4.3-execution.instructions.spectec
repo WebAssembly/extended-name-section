@@ -190,7 +190,7 @@ rule Step/call_ref-hostfunc-res:
   -- if RES s' result <- $hostcall(_HOSTFUNC hf, s, val^n)
 
 rule Step/call_ref-hostfunc-div:
-  s; f; val^n (REF.FUNC_ADDR a) (CALL_REF yy)  ~>  s; f; (REF.FUNC_ADDR a) (CALL_REF yy)
+  s; f; val^n (REF.FUNC_ADDR a) (CALL_REF yy)  ~>  s; f; val^n (REF.FUNC_ADDR a) (CALL_REF yy)
   ----
   -- if $funcinst((s; f))[a] = fi
   -- Expand: fi.TYPE ~~ FUNC t_1^n -> t_2^m
@@ -451,11 +451,11 @@ rule Step_read/load-pack-val:
   ----
   -- if $ibytes_(n, c) = $mem(z, x).BYTES[i + ao.OFFSET : n/8]
 
-rule Step_read/vload-oob:
+rule Step_read/vload-num-oob:
   z; (CONST at i) (VLOAD V128 x ao)  ~>  TRAP
   -- if $(i + ao.OFFSET + $vsize(V128)/8 > |$mem(z, x).BYTES|)
 
-rule Step_read/vload-val:
+rule Step_read/vload-num-val:
   z; (CONST at i) (VLOAD V128 x ao)  ~>  (VCONST V128 c)
   -- if $vbytes_(V128, c) = $mem(z, x).BYTES[i + ao.OFFSET : $vsize(V128)/8]
 

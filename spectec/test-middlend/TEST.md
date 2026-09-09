@@ -3799,7 +3799,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- if (C.DATAS_context[x!`%`_idx.0] = OK_datatype)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:451.1-454.44
-  rule `load-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `load-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, LOAD_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([(nt : numtype <: valtype)],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $size(nt))
@@ -3811,7 +3811,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:470.1-473.44
-  rule `store-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `store-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, STORE_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype) (nt : numtype <: valtype)],), [], `%`_resulttype([],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $size(nt))
@@ -3823,7 +3823,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:480.1-483.47
-  rule `vload-val`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `vload-num`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, VLOAD_instr(V128_vectype, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([V128_valtype],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $vsize(V128_vectype))
@@ -6627,12 +6627,12 @@ relation Step_read: `%~>%`(config, instr*)
     -- if ($ibytes_(n, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : (((n : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
+  rule `vload-num-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [TRAP_instr])
     -- if (((i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) + ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)) > |$mem(z, x).BYTES_meminst|)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
+  rule `vload-num-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [VCONST_instr(V128_vectype, c)])
     -- if ($vbytes_(V128_vectype, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
@@ -7007,7 +7007,7 @@ relation Step: `%~>%`(config, config)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec:192.1-198.49
   rule `call_ref-hostfunc-div`{s : store, f : frame, n : n, `val*` : val*, a : addr, yy : typeuse, fi : funcinst, `t_1*` : valtype*, m : m, `t_2*` : valtype*, hf : text}:
-    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
+    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
     -- if ($funcinst(`%;%`_state(s, f))[a] = fi)
     -- Expand: `%~~%`(fi.TYPE_funcinst, `FUNC%->%`_comptype(`%`_resulttype(t_1^n{t_1 <- `t_1*`},), `%`_resulttype(t_2^m{t_2 <- `t_2*`},)))
     -- if (fi.CODE_funcinst = _HOSTFUNC_funccode(hf))
@@ -15709,7 +15709,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- if (C.DATAS_context[x!`%`_idx.0] = OK_datatype)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:451.1-454.44
-  rule `load-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `load-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, LOAD_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([(nt : numtype <: valtype)],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $size(nt))
@@ -15721,7 +15721,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:470.1-473.44
-  rule `store-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `store-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, STORE_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype) (nt : numtype <: valtype)],), [], `%`_resulttype([],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $size(nt))
@@ -15733,7 +15733,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:480.1-483.47
-  rule `vload-val`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `vload-num`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, VLOAD_instr(V128_vectype, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([V128_valtype],)))
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
     -- Memarg_ok: `|-%:%->%`(memarg, at, $vsize(V128_vectype))
@@ -18539,12 +18539,12 @@ relation Step_read: `%~>%`(config, instr*)
     -- if ($ibytes_(n, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : (((n : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
+  rule `vload-num-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [TRAP_instr])
     -- if (((i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) + ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)) > |$mem(z, x).BYTES_meminst|)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
+  rule `vload-num-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [VCONST_instr(V128_vectype, c)])
     -- if ($vbytes_(V128_vectype, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
@@ -18919,7 +18919,7 @@ relation Step: `%~>%`(config, config)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec:192.1-198.49
   rule `call_ref-hostfunc-div`{s : store, f : frame, n : n, `val*` : val*, a : addr, yy : typeuse, fi : funcinst, `t_1*` : valtype*, m : m, `t_2*` : valtype*, hf : text}:
-    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
+    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
     -- if ($funcinst(`%;%`_state(s, f))[a] = fi)
     -- Expand: `%~~%`(fi.TYPE_funcinst, `FUNC%->%`_comptype(`%`_resulttype(t_1^n{t_1 <- `t_1*`},), `%`_resulttype(t_2^m{t_2 <- `t_2*`},)))
     -- if (fi.CODE_funcinst = _HOSTFUNC_funccode(hf))
@@ -27714,7 +27714,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- if (C.DATAS_context[x!`%`_idx.0] = OK_datatype)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:451.1-454.44
-  rule `load-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `load-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, LOAD_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([(nt : numtype <: valtype)],)))
     -- if (x!`%`_idx.0 < |C.MEMS_context|)
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
@@ -27728,7 +27728,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:470.1-473.44
-  rule `store-val`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `store-num`{C : context, nt : numtype, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, STORE_instr(nt, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype) (nt : numtype <: valtype)],), [], `%`_resulttype([],)))
     -- if (x!`%`_idx.0 < |C.MEMS_context|)
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
@@ -27742,7 +27742,7 @@ relation Instr_ok: `%|-%:%`(context, instr, instrtype)
     -- Memarg_ok: `|-%:%->%`(memarg, at, K)
 
   ;; ../../../../specification/wasm-latest/2.3-validation.instructions.spectec:480.1-483.47
-  rule `vload-val`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
+  rule `vload-num`{C : context, x : idx, memarg : memarg, at : addrtype, lim : limits}:
     `%|-%:%`(C, VLOAD_instr(V128_vectype, ?(), x, memarg), `%->_%%`_instrtype(`%`_resulttype([(at : addrtype <: valtype)],), [], `%`_resulttype([V128_valtype],)))
     -- if (x!`%`_idx.0 < |C.MEMS_context|)
     -- if (C.MEMS_context[x!`%`_idx.0] = `%%PAGE`_memtype(at, lim))
@@ -30608,12 +30608,12 @@ relation Step_read: `%~>%`(config, instr*)
     -- if ($ibytes_(n, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : (((n : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
+  rule `vload-num-oob`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [TRAP_instr])
     -- if (((i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) + ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)) > |$mem(z, x).BYTES_meminst|)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec
-  rule `vload-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
+  rule `vload-num-val`{z : state, at : addrtype, i : num_((at : addrtype <: numtype)), x : idx, ao : memarg, c : vec_(V128_Vnn)}:
     `%~>%`(`%;%`_config(z, [CONST_instr((at : addrtype <: numtype), i) VLOAD_instr(V128_vectype, ?(), x, ao)]), [VCONST_instr(V128_vectype, c)])
     -- if ($vbytes_(V128_vectype, c) = $mem(z, x).BYTES_meminst[(i!`%`_num_.0 + ao.OFFSET_memarg!`%`_u64.0) : ((($vsize(V128_vectype) : nat <:> rat) / (8 : nat <:> rat)) : rat <:> nat)])
 
@@ -31009,7 +31009,7 @@ relation Step: `%~>%`(config, config)
 
   ;; ../../../../specification/wasm-latest/4.3-execution.instructions.spectec:192.1-198.49
   rule `call_ref-hostfunc-div`{s : store, f : frame, n : n, `val*` : val*, a : addr, yy : typeuse, fi : funcinst, `t_1*` : valtype*, m : m, `t_2*` : valtype*, hf : text}:
-    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
+    `%~>%`(`%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]), `%;%`_config(`%;%`_state(s, f), (val : val <: instr)^n{val <- `val*`} ++ [`REF.FUNC_ADDR`_instr(a) CALL_REF_instr(yy)]))
     -- if (a < |$funcinst(`%;%`_state(s, f))|)
     -- if ($funcinst(`%;%`_state(s, f))[a] = fi)
     -- Expand: `%~~%`(fi.TYPE_funcinst, `FUNC%->%`_comptype(`%`_resulttype(t_1^n{t_1 <- `t_1*`},), `%`_resulttype(t_2^m{t_2 <- `t_2*`},)))
