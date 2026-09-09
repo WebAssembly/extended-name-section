@@ -244,7 +244,7 @@
     "(module (func)"
     "  (@custom \"name\" (after data) \"\\01\\07\\02\\00\\01a\\00\\01b\"))"
   )
-  "custom @name: multiple function names"
+  "custom @name: duplicate function name"
 )
 
 ;; Decreasing index in a name map.
@@ -253,7 +253,7 @@
     "(module (func) (func)"
     "  (@custom \"name\" (after data) \"\\01\\07\\02\\01\\01b\\00\\01a\"))"
   )
-  "custom @name: multiple function names"
+  "custom @name: function names out of order"
 )
 
 ;; Duplicate primary index in an indirect name map.
@@ -263,7 +263,7 @@
     "  (@custom \"name\" (after data)"
     "    \"\\02\\0b\\02\\00\\01\\00\\01a\\00\\01\\00\\01b\"))"
   )
-  "custom @name: multiple local name maps"
+  "custom @name: duplicate local name map"
 )
 
 ;; Decreasing primary index in an indirect name map.
@@ -273,7 +273,7 @@
     "  (@custom \"name\" (after data)"
     "    \"\\02\\0b\\02\\01\\01\\00\\01b\\00\\01\\00\\01a\"))"
   )
-  "custom @name: multiple local name maps"
+  "custom @name: local name maps out of order"
 )
 
 ;; Duplicate secondary index within one inner name map.
@@ -283,7 +283,7 @@
     "  (@custom \"name\" (after data)"
     "    \"\\02\\09\\01\\00\\02\\00\\01a\\00\\01b\"))"
   )
-  "custom @name: multiple local names"
+  "custom @name: duplicate local name"
 )
 
 ;; Decreasing secondary index within one inner name map.
@@ -293,7 +293,7 @@
     "  (@custom \"name\" (after data)"
     "    \"\\02\\09\\01\\00\\02\\01\\01b\\00\\01a\"))"
   )
-  "custom @name: multiple local names"
+  "custom @name: local names out of order"
 )
 
 

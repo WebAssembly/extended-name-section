@@ -45,7 +45,7 @@
 
 (assert_malformed_custom
   (module quote "(module (type $t (func)) (func (type $t) (@name \"f\")))")
-  "@name annotation: misplaced annotation"
+  "misplaced @name annotation"
 )
 
 
@@ -125,13 +125,13 @@
 ;; The label identifier at the matching `end` is not a binding occurrence.
 (assert_malformed_custom
   (module quote "(module (func block $b end $b (@name \"b\")))")
-  "@name annotation: misplaced annotation"
+  "misplaced @name annotation"
 )
 
 ;; Nor is a branch target a binding occurrence.
 (assert_malformed_custom
   (module quote "(module (func block $b br $b (@name \"b\") end))")
-  "@name annotation: misplaced annotation"
+  "misplaced @name annotation"
 )
 
 
@@ -205,7 +205,7 @@
 
 (assert_malformed_custom
   (module quote "(module (table 1 funcref (@name \"t\")))")
-  "@name annotation: misplaced annotation"
+  "misplaced @name annotation"
 )
 
 
