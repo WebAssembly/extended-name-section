@@ -299,6 +299,85 @@
 )
 
 
+;; Misplaced annotations
+
+;; Before the identifier
+(assert_malformed_custom
+  (module quote "(module (type $t (func)) (func (@name \"f\") $f (type $t)))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (table (@name \"t\") $t 1 funcref))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (func (local (@name \"l\") $l i32)))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (type (struct (field (@name \"f\") $f i32))))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (func block (@name \"b\") $b end))")
+  "misplaced @name annotation"
+)
+
+;; Before the keyword
+(assert_malformed_custom
+  (module quote "(module (type $t (func)) ((@name \"f\") func (type $t)))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module ((@name \"t\") table 1 funcref))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (type (struct ((@name \"f\") field i32))))")
+  "misplaced @name annotation"
+)
+
+;; After an inline export or import clause
+(assert_malformed_custom
+  (module quote "(module (func (export \"f\") (@name \"f\")))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (memory (export \"m\") (@name \"m\") 1))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (func (import \"m\" \"f\") (@name \"f\")))")
+  "misplaced @name annotation"
+)
+
+;; Elsewhere inside a declaration
+(assert_malformed_custom
+  (module quote "(module (table 1 (@name \"t\") funcref))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (global (mut i32) (@name \"g\") (i32.const 0)))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (type (func (param i32) (@name \"T\") (result i32))))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (memory 1) (data (i32.const 0) (@name \"d\") \"x\"))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (import \"m\" (@name \"f\") \"f\" (func)))")
+  "misplaced @name annotation"
+)
+(assert_malformed_custom
+  (module quote "(module (func (local i32) (@name \"l\") (local i64)))")
+  "misplaced @name annotation"
+)
+
+
 ;; Annotation payload syntax
 
 (assert_malformed_custom
